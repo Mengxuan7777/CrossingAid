@@ -1,17 +1,20 @@
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class XRStartAligner : MonoBehaviour
 {
-    public Transform xrOrigin;
-    public Transform xrCamera;
+    public XROrigin xrOrigin;
     public Transform startPoint;
 
     void Start()
     {
-        Vector3 cameraOffset = xrCamera.position - xrOrigin.position;
-        cameraOffset.y = 0f;
+        if (xrOrigin == null || startPoint == null)
+        {
+            Debug.LogWarning("[XRStartAligner] xrOrigin or startPoint is not assigned.", this);
+            return;
+        }
 
-        xrOrigin.position = startPoint.position - cameraOffset;
-        xrOrigin.rotation = startPoint.rotation;
+        xrOrigin.MoveCameraToWorldLocation(startPoint.position);
+        xrOrigin.MatchOriginUpCameraForward(startPoint.forward, Vector3.up);
     }
 }

@@ -1,407 +1,157 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.XR.CoreUtils;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ExperimentController : MonoBehaviour
 {
-    public enum DistractionType
-    {
-        None,
-        Conversation,
-        TextReading
-    }
-
-    [System.Serializable]
-    public class TrialCondition
-    {
-        public string conditionName = "Gate_None";
-        public bool gatePresent = true;
-        public DistractionType distractionType = DistractionType.None;
-
-        [Tooltip("Seconds from trial start to WALK onset.")]
-        public float walkOnsetSec = 3.0f;
-
-        [Tooltip("Maximum trial duration from StartTrial().")]
-        public float maxTrialDurationSec = 10.0f;
-
-        [Tooltip("Optional time before StartTrial() after reset.")]
-        public float preStartDelaySec = 1.0f;
-    }
-
     [Header("Core References")]
     public EyeTrackingLogger logger;
-    public Transform playerRoot;
-    public Transform trialStartPose;
+    public Transform playerRoot;       // Assign XR Origin here
+    public Transform trialStartPose;   // Empty GameObject in scene
 
-    [Header("Session Metadata")]
+    [Header("Trial Metadata")]
     public string participantId = "P001";
     public string sessionId = "S001";
+    public string conditionName = "TestCondition";
+    public string distractionType = "None";
+    public int trialNumber = 1;
 
-    [Header("Trials")]
-    public List<TrialCondition> trials = new List<TrialCondition>();
-    public bool autoAdvanceToNextTrial = false;
-    public float interTrialIntervalSec = 2.0f;
+    [Header("Options")]
+    public bool autoStartOnPlay = false;
+    public bool resetPlayerOnStartTrial = true;
 
-    [Header("Debug Controls")]
-    public bool debugKeyboardControls = true;
+    [Header("Debug Keys")]
+    public bool enableDebugKeys = true;
+    public KeyCode startTrialKey = KeyCode.S;
+    public KeyCode endTrialKey = KeyCode.E;
+    public KeyCode resetPlayerKey = KeyCode.R;
+    public KeyCode dontWalkKey = KeyCode.Alpha1;
+    public KeyCode walkKey = KeyCode.Alpha2;
+    public KeyCode gateClosedKey = KeyCode.Alpha3;
+    public KeyCode gateOpenKey = KeyCode.Alpha4;
 
-    [Header("Signal Events")]
-    public UnityEvent onDontWalk;
-    public UnityEvent onWalk;
+    private bool trialStarted = false;
 
-    [Header("Gate Events")]
-    public UnityEvent onGateClosed;
-    public UnityEvent onGateOpen;
-    public UnityEvent onGateHidden;
-
-    [Header("Distraction Events")]
-    public UnityEvent onNoDistractionStart;
-    public UnityEvent onConversationStart;
-    public UnityEvent onTextReadingStart;
-    public UnityEvent onDistractionStop;
-
-    [Header("Trial Events")]
-    public UnityEvent onTrialPrepared;
-    public UnityEvent onTrialStarted;
-    public UnityEvent onTrialEnded;
-    public UnityEvent onSessionStarted;
-    public UnityEvent onSessionEnded;
-
-    private int currentTrialIndex = -1;
-    private Coroutine runningTrialRoutine;
-    private bool sessionActive = false;
-
-    public int CurrentTrialIndex
+    private void Start()
     {
-        get { return currentTrialIndex; }
-    }
-
-    public bool TrialRunning
-    {
-        get { return runningTrialRoutine != null; }
+        if (autoStartOnPlay)
+        {
+            StartTrial();
+        }
     }
 
     private void Update()
     {
-        if (!debugKeyboardControls)
+        if (!enableDebugKeys)
         {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(startTrialKey))
         {
-            StartSession();
+            StartTrial();
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(endTrialKey))
         {
-            StartNextTrial();
+            EndTrial("ManualEnd");
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ForceEndCurrentTrial("ManualEnd");
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(resetPlayerKey))
         {
             ResetPlayerToStart();
         }
+
+        if (Input.GetKeyDown(dontWalkKey))
+        {
+            SetDontWalk();
+        }
+
+        if (Input.GetKeyDown(walkKey))
+        {
+            SetWalk();
+        }
+
+        if (Input.GetKeyDown(gateClosedKey))
+        {
+            SetGateClosed();
+        }
+
+        if (Input.GetKeyDown(gateOpenKey))
+        {
+            SetGateOpen();
+        }
     }
 
-    public void StartSession()
+    public void StartTrial()
     {
-        if (sessionActive)
+        if (logger == null)
         {
-            Debug.LogWarning("Session already active.");
+            Debug.LogWarning("ExperimentController: Logger is not assigned.");
             return;
         }
 
-        sessionActive = true;
-        currentTrialIndex = -1;
-
-        if (logger != null)
+        if (trialStarted && logger.TrialActive)
         {
-            logger.WriteCustomEvent("SessionStart", sessionId);
-        }
-
-        onSessionStarted.Invoke();
-
-        Debug.Log("Session started: " + sessionId);
-    }
-
-    public void EndSession()
-    {
-        if (!sessionActive)
-        {
+            Debug.LogWarning("ExperimentController: Trial already running.");
             return;
         }
 
-        if (TrialRunning)
+        if (resetPlayerOnStartTrial)
         {
-            ForceEndCurrentTrial("SessionEnded");
+            ResetPlayerToStart();
         }
 
-        sessionActive = false;
+        logger.ConfigureTrial(
+            participantId,
+            sessionId,
+            conditionName,
+            distractionType,
+            trialNumber
+        );
 
-        if (logger != null)
-        {
-            logger.WriteCustomEvent("SessionEnd", sessionId);
-        }
+        logger.StartTrial();
+        trialStarted = true;
 
-        onSessionEnded.Invoke();
-
-        Debug.Log("Session ended: " + sessionId);
+        Debug.Log("Trial started.");
     }
 
-    public void StartNextTrial()
+    public void EndTrial(string reason)
     {
-        if (!sessionActive)
+        if (logger == null)
         {
-            Debug.LogWarning("StartSession() first.");
+            Debug.LogWarning("ExperimentController: Logger is not assigned.");
             return;
         }
 
-        if (TrialRunning)
+        if (!logger.TrialActive)
         {
-            Debug.LogWarning("A trial is already running.");
+            Debug.LogWarning("ExperimentController: No active trial to end.");
             return;
         }
 
-        currentTrialIndex += 1;
+        logger.EndTrial(reason);
+        trialStarted = false;
 
-        if (currentTrialIndex >= trials.Count)
-        {
-            Debug.Log("All trials completed.");
-            EndSession();
-            return;
-        }
-
-        runningTrialRoutine = StartCoroutine(RunTrial(trials[currentTrialIndex], currentTrialIndex + 1));
-    }
-
-    public void ForceEndCurrentTrial(string reason)
-    {
-        if (!TrialRunning)
-        {
-            return;
-        }
-
-        StopAllCoroutines();
-
-        StopDistraction();
-
-        if (logger != null && logger.TrialActive)
-        {
-            logger.EndTrial(reason);
-        }
-
-        onTrialEnded.Invoke();
-        runningTrialRoutine = null;
-
-        Debug.Log("Trial force-ended: " + reason);
-    }
-
-    private IEnumerator RunTrial(TrialCondition trial, int trialNumber)
-    {
-        ResetPlayerToStart();
-
-        if (logger != null)
-        {
-            logger.ConfigureTrial(
-                participantId,
-                sessionId,
-                trial.conditionName,
-                trial.distractionType.ToString(),
-                trialNumber
-            );
-        }
-
-        PrepareInitialTrialState(trial);
-
-        if (logger != null)
-        {
-            logger.WriteCustomEvent("TrialPrepared", trial.conditionName);
-        }
-
-        onTrialPrepared.Invoke();
-
-        if (trial.preStartDelaySec > 0f)
-        {
-            yield return new WaitForSeconds(trial.preStartDelaySec);
-        }
-
-        if (logger != null)
-        {
-            logger.StartTrial();
-        }
-
-        onTrialStarted.Invoke();
-
-        StartDistraction(trial.distractionType);
-
-        float elapsed = 0f;
-        bool walkTriggered = false;
-
-        while (elapsed < trial.maxTrialDurationSec)
-        {
-            elapsed += Time.deltaTime;
-
-            if (!walkTriggered && elapsed >= trial.walkOnsetSec)
-            {
-                TriggerWalkState(trial);
-                walkTriggered = true;
-            }
-
-            if (logger != null && logger.CrossingInitiationLogged)
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        StopDistraction();
-
-        if (logger != null && logger.TrialActive)
-        {
-            if (logger.CrossingInitiationLogged)
-            {
-                logger.EndTrial("CrossingInitiated");
-            }
-            else
-            {
-                logger.EndTrial("Timeout");
-            }
-        }
-
-        onTrialEnded.Invoke();
-
-        yield return new WaitForSeconds(interTrialIntervalSec);
-
-        runningTrialRoutine = null;
-
-        if (autoAdvanceToNextTrial)
-        {
-            StartNextTrial();
-        }
-    }
-
-    private void PrepareInitialTrialState(TrialCondition trial)
-    {
-        SetDontWalkState();
-
-        if (trial.gatePresent)
-        {
-            SetGateClosedState();
-        }
-        else
-        {
-            SetGateHiddenState();
-        }
-    }
-
-    private void TriggerWalkState(TrialCondition trial)
-    {
-        SetWalkState();
-
-        if (trial.gatePresent)
-        {
-            SetGateOpenState();
-        }
-    }
-
-    public void SetDontWalkState()
-    {
-        if (logger != null)
-        {
-            logger.SetSignalState("DONT_WALK");
-        }
-
-        onDontWalk.Invoke();
-    }
-
-    public void SetWalkState()
-    {
-        if (logger != null)
-        {
-            logger.SetSignalState("WALK");
-        }
-
-        onWalk.Invoke();
-    }
-
-    public void SetGateClosedState()
-    {
-        if (logger != null)
-        {
-            logger.SetGateState("CLOSED");
-        }
-
-        onGateClosed.Invoke();
-    }
-
-    public void SetGateOpenState()
-    {
-        if (logger != null)
-        {
-            logger.SetGateState("OPEN");
-        }
-
-        onGateOpen.Invoke();
-    }
-
-    public void SetGateHiddenState()
-    {
-        if (logger != null)
-        {
-            logger.SetGateState("ABSENT");
-        }
-
-        onGateHidden.Invoke();
-    }
-
-    private void StartDistraction(DistractionType distractionType)
-    {
-        if (logger != null)
-        {
-            logger.WriteCustomEvent("DistractionStart", distractionType.ToString());
-        }
-
-        if (distractionType == DistractionType.None)
-        {
-            onNoDistractionStart.Invoke();
-        }
-        else if (distractionType == DistractionType.Conversation)
-        {
-            onConversationStart.Invoke();
-        }
-        else if (distractionType == DistractionType.TextReading)
-        {
-            onTextReadingStart.Invoke();
-        }
-    }
-
-    private void StopDistraction()
-    {
-        if (logger != null)
-        {
-            logger.WriteCustomEvent("DistractionStop", "");
-        }
-
-        onDistractionStop.Invoke();
+        Debug.Log("Trial ended. Reason: " + reason);
     }
 
     public void ResetPlayerToStart()
     {
         if (playerRoot == null || trialStartPose == null)
         {
+            Debug.LogWarning("ExperimentController: playerRoot or trialStartPose is missing.");
             return;
         }
 
-        playerRoot.position = trialStartPose.position;
-        playerRoot.rotation = trialStartPose.rotation;
+        XROrigin xrOrigin = playerRoot.GetComponent<XROrigin>();
+        if (xrOrigin == null)
+        {
+            Debug.LogWarning("ExperimentController: No XROrigin found on playerRoot.");
+            return;
+        }
+
+        CharacterController cc = playerRoot.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
 
         Rigidbody rb = playerRoot.GetComponent<Rigidbody>();
         if (rb != null)
@@ -410,13 +160,53 @@ public class ExperimentController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        CharacterController cc = playerRoot.GetComponent<CharacterController>();
-        if (cc != null)
+        xrOrigin.MoveCameraToWorldLocation(trialStartPose.position);
+        xrOrigin.MatchOriginUpCameraForward(trialStartPose.forward, Vector3.up);
+
+        if (cc != null) cc.enabled = true;
+
+        Debug.Log("Player reset to start pose.");
+        Debug.Log("XROrigin position: " + playerRoot.position);
+        Debug.Log("Camera position: " + xrOrigin.Camera.transform.position);
+    }
+
+    public void SetDontWalk()
+    {
+        if (logger != null)
         {
-            cc.enabled = false;
-            playerRoot.position = trialStartPose.position;
-            playerRoot.rotation = trialStartPose.rotation;
-            cc.enabled = true;
+            logger.SetSignalState("DONT_WALK");
+        }
+    }
+
+    public void SetWalk()
+    {
+        if (logger != null)
+        {
+            logger.SetSignalState("WALK");
+        }
+    }
+
+    public void SetGateClosed()
+    {
+        if (logger != null)
+        {
+            logger.SetGateState("CLOSED");
+        }
+    }
+
+    public void SetGateOpen()
+    {
+        if (logger != null)
+        {
+            logger.SetGateState("OPEN");
+        }
+    }
+
+    public void WriteCustomEvent(string eventName, string eventValue)
+    {
+        if (logger != null)
+        {
+            logger.WriteCustomEvent(eventName, eventValue);
         }
     }
 }
