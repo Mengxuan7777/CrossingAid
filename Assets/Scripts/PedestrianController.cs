@@ -29,25 +29,16 @@ public class PedestrianController : MonoBehaviour, ISpawnable
     {
         _currentIndex = 0;
         _waitingToCross = false;
-        _agent.isStopped = false;
         _agent.speed = speed;
 
-        if (waypoints == null || waypoints.Length == 0)
-        {
-            Debug.LogWarning($"[Pedestrian] '{name}': no waypoints assigned.", this);
-            return;
-        }
+        if (waypoints == null || waypoints.Length == 0) return;
 
-        _agent.Warp(waypoints[0].position);
+        if (!_agent.Warp(waypoints[0].position)) return;
+        _agent.isStopped = false;
         SetDestination(0);
-        Debug.Log($"[Pedestrian] '{name}': spawned at {waypoints[0].position}, heading to waypoint 0.", this);
 
         var ctrl = IntersectionSignalController.Instance;
-        if (ctrl == null)
-        {
-            Debug.LogError($"[Pedestrian] '{name}': IntersectionSignalController.Instance is null — signal events won't work.", this);
-            return;
-        }
+        if (ctrl == null) return;
         if (crossingVehicleDirection == SignalDirection.NorthSouth)
             ctrl.OnNorthSouthChanged += OnSignalChanged;
         else
@@ -74,21 +65,16 @@ public class PedestrianController : MonoBehaviour, ISpawnable
         if (_agent.pathPending) return;
         if (_agent.remainingDistance > waypointReachDistance) return;
 
-        // Arrived at waypoints[_currentIndex]
-        Debug.Log($"[Pedestrian] '{name}': reached waypoint {_currentIndex}.", this);
-
         if (_currentIndex == waitWaypointIndex && !IsSafeToCross())
         {
             _agent.isStopped = true;
             _waitingToCross = true;
-            Debug.Log($"[Pedestrian] '{name}': waiting at curb — {crossingVehicleDirection} is not Red.", this);
             return;
         }
 
         _currentIndex++;
         if (_currentIndex >= waypoints.Length)
         {
-            Debug.Log($"[Pedestrian] '{name}': reached destination.", this);
             OnDestinationReached?.Invoke();
             return;
         }
@@ -98,6 +84,7 @@ public class PedestrianController : MonoBehaviour, ISpawnable
 
     private void SetDestination(int index)
     {
+        if (!_agent.isOnNavMesh) return;
         _agent.isStopped = false;
         _agent.SetDestination(waypoints[index].position);
     }
@@ -111,11 +98,9 @@ public class PedestrianController : MonoBehaviour, ISpawnable
 
     private void OnSignalChanged(VehicleLightState state)
     {
-        Debug.Log($"[Pedestrian] '{name}': signal changed to {state} (waiting={_waitingToCross}).", this);
         if (_waitingToCross && state == VehicleLightState.Red)
         {
             _waitingToCross = false;
-            Debug.Log($"[Pedestrian] '{name}': crossing now.", this);
             SetDestination(_currentIndex);
         }
     }

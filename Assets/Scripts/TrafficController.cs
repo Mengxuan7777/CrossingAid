@@ -30,6 +30,13 @@ public class IntersectionSignalController : MonoBehaviour
         return direction == SignalDirection.NorthSouth ? _northSouthState : _eastWestState;
     }
 
+    // Total duration a vehicle direction stays Red per cycle (the pedestrian safe-crossing window).
+    // = all-red buffer + other direction green + other direction yellow + all-red buffer
+    public float GetSafeCrossingDuration()
+    {
+        return allRedDuration + greenDuration + yellowDuration + allRedDuration;
+    }
+
     private void Awake()
     {
         Instance = this;

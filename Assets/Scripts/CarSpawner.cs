@@ -36,11 +36,7 @@ public class CarSpawner : MonoBehaviour
         _poolRoot = new GameObject("[CarPool]");
         _poolRoot.SetActive(false);
 
-        if (prefabs == null || prefabs.Length == 0)
-        {
-            Debug.LogWarning($"[CarSpawner] '{name}': no prefabs assigned.", this);
-            return;
-        }
+        if (prefabs == null || prefabs.Length == 0) return;
 
         _pool = new Dictionary<GameObject, Queue<GameObject>>();
         foreach (var prefab in prefabs)
@@ -54,11 +50,8 @@ public class CarSpawner : MonoBehaviour
                 queue.Enqueue(go);
             }
             _pool[prefab] = queue;
-            Debug.Log($"[CarSpawner] '{name}': pooled {poolSizePerPrefab}x '{prefab.name}'.", this);
         }
 
-        if (groups == null || groups.Length == 0)
-            Debug.LogWarning($"[CarSpawner] '{name}': no direction groups configured.", this);
 
         _activePerGroup = new int[groups?.Length ?? 0];
         _nextSpawnInterval = 0f;
@@ -83,12 +76,7 @@ public class CarSpawner : MonoBehaviour
         int groupIndex = PickGroup();
         if (groupIndex < 0) return;
 
-        // Don't spawn if a car from this group is still on the road
-        if (_activePerGroup[groupIndex] > 0)
-        {
-            Debug.Log($"[CarSpawner] '{name}' [{groups[groupIndex].label}]: lane occupied — skipping tick.", this);
-            return;
-        }
+        if (_activePerGroup[groupIndex] > 0) return;
 
         var group = groups[groupIndex];
 
@@ -102,7 +90,6 @@ public class CarSpawner : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning($"[CarSpawner] '{name}' [{group.label}]: all pools exhausted — skipping tick.", this);
     }
 
     private int PickGroup()
@@ -128,7 +115,6 @@ public class CarSpawner : MonoBehaviour
         var ctrl = go.GetComponent<CarController>();
         if (ctrl == null)
         {
-            Debug.LogError($"[CarSpawner] '{name}': '{go.name}' missing CarController — add it to the prefab.", go);
             go.transform.SetParent(_poolRoot.transform);
             returnQueue.Enqueue(go);
             return;
@@ -154,11 +140,9 @@ public class CarSpawner : MonoBehaviour
             go.SetActive(false);
             go.transform.SetParent(_poolRoot.transform);
             returnQueue.Enqueue(go);
-            Debug.Log($"[CarSpawner] '{name}' [{group.label}]: '{go.name}' returned to pool.", this);
         };
         spawnable.OnDestinationReached += callback;
 
         go.SetActive(true);
-        Debug.Log($"[CarSpawner] '{name}' [{group.label}]: spawned '{go.name}'.", this);
     }
 }

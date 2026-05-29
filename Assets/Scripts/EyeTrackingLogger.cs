@@ -32,15 +32,11 @@ public class EyeTrackingLogger : MonoBehaviour
     [Header("Metadata")]
     public string participantId = "P001";
     public string sessionId = "S001";
-    public string conditionName = "Gate_Present";
+    public string conditionName = "Baseline";
     public string distractionType = "Text";
     public int trialNumber = 1;
 
-    [Header("Debug")]
-    public bool logToConsole = false;
-
     private string currentSignalState = "UNKNOWN";
-    private string currentGateState = "UNKNOWN";
 
     private bool trialActive = false;
     private bool crossingInitiationLogged = false;
@@ -48,6 +44,8 @@ public class EyeTrackingLogger : MonoBehaviour
     private double trialStartTime = -1.0;
     private double nextSampleTime = 0.0;
     private double sampleInterval = 1.0 / 90.0;
+    private double nextFlushTime = 0.0;
+    private const double FlushInterval = 2.0;
 
     private string folderPath;
     private string gazeFilePath;
@@ -121,6 +119,12 @@ public class EyeTrackingLogger : MonoBehaviour
             SampleGaze(now);
             nextSampleTime += sampleInterval;
         }
+
+        if (now >= nextFlushTime)
+        {
+            gazeWriter?.Flush();
+            nextFlushTime = now + FlushInterval;
+        }
     }
 
     private void OpenFiles()
@@ -130,7 +134,7 @@ public class EyeTrackingLogger : MonoBehaviour
 
         gazeWriter.WriteLine(
             "timestamp_s,trial_time_s,participant_id,session_id,condition_name,distraction_type,trial_number," +
-            "trial_active,gaze_valid,signal_state,gate_state," +
+            "trial_active,gaze_valid,signal_state," +
             "gaze_origin_x,gaze_origin_y,gaze_origin_z," +
             "gaze_dir_x,gaze_dir_y,gaze_dir_z," +
             "hit_aoi_id,hit_aoi_group,hit_point_x,hit_point_y,hit_point_z,hit_distance," +
@@ -139,7 +143,7 @@ public class EyeTrackingLogger : MonoBehaviour
 
         eventWriter.WriteLine(
             "timestamp_s,trial_time_s,participant_id,session_id,condition_name,distraction_type,trial_number," +
-            "event_name,event_value,signal_state,gate_state"
+            "event_name,event_value,signal_state"
         );
 
         gazeWriter.Flush();
@@ -195,6 +199,13 @@ public class EyeTrackingLogger : MonoBehaviour
         {
             gazeDir = gazeRotation * Vector3.forward;
 
+            // Eye gaze pose is in head-local space; transform to world space for raycasting.
+            if (xrCamera != null)
+            {
+                gazeOrigin = xrCamera.transform.TransformPoint(gazeOrigin);
+                gazeDir = xrCamera.transform.TransformDirection(gazeDir);
+            }
+
             Ray ray = new Ray(gazeOrigin, gazeDir);
             RaycastHit hit;
 
@@ -236,7 +247,6 @@ public class EyeTrackingLogger : MonoBehaviour
             (trialActive ? "1" : "0") + "," +
             (gazeValid ? "1" : "0") + "," +
             Escape(currentSignalState) + "," +
-            Escape(currentGateState) + "," +
             F(gazeOrigin.x) + "," + F(gazeOrigin.y) + "," + F(gazeOrigin.z) + "," +
             F(gazeDir.x) + "," + F(gazeDir.y) + "," + F(gazeDir.z) + "," +
             Escape(hitAoiId) + "," + Escape(hitAoiGroup) + "," +
@@ -245,11 +255,6 @@ public class EyeTrackingLogger : MonoBehaviour
             F(headRot.x) + "," + F(headRot.y) + "," + F(headRot.z) + "," + F(headRot.w);
 
         gazeWriter.WriteLine(row);
-
-        if (logToConsole && gazeValid)
-        {
-            Debug.Log("Gaze AOI: " + hitAoiId);
-        }
     }
 
     private bool TryReadGazePose(out Vector3 gazeOrigin, out Quaternion gazeRotation)
@@ -258,9 +263,7 @@ public class EyeTrackingLogger : MonoBehaviour
         gazeRotation = Quaternion.identity;
 
         if (gazePositionAction.action == null || gazeRotationAction.action == null)
-        {
             return false;
-        }
 
         try
         {
@@ -268,7 +271,7 @@ public class EyeTrackingLogger : MonoBehaviour
             gazeRotation = gazeRotationAction.action.ReadValue<Quaternion>();
             return true;
         }
-        catch
+        catch (Exception)
         {
             return false;
         }
@@ -286,7 +289,7 @@ public class EyeTrackingLogger : MonoBehaviour
             float trackedValue = gazeTrackedAction.action.ReadValue<float>();
             return trackedValue > 0.5f;
         }
-        catch
+        catch (Exception)
         {
             return false;
         }
@@ -320,12 +323,6 @@ public class EyeTrackingLogger : MonoBehaviour
     {
         currentSignalState = state;
         WriteEvent("SignalState", state);
-    }
-
-    public void SetGateState(string state)
-    {
-        currentGateState = state;
-        WriteEvent("GateState", state);
     }
 
     public void MarkCrossingInitiation(string crossingLineId)
@@ -364,16 +361,10 @@ public class EyeTrackingLogger : MonoBehaviour
             trialNumber.ToString(CultureInfo.InvariantCulture) + "," +
             Escape(eventName) + "," +
             Escape(eventValue) + "," +
-            Escape(currentSignalState) + "," +
-            Escape(currentGateState);
+            Escape(currentSignalState);
 
         eventWriter.WriteLine(row);
         eventWriter.Flush();
-
-        if (logToConsole)
-        {
-            Debug.Log("Event: " + eventName + " | " + eventValue);
-        }
     }
 
     private string F(double value)

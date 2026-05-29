@@ -35,11 +35,7 @@ public class PedestrianSpawner : MonoBehaviour
         _poolRoot = new GameObject("[PedPool]");
         _poolRoot.SetActive(false);
 
-        if (prefabs == null || prefabs.Length == 0)
-        {
-            Debug.LogWarning($"[PedestrianSpawner] '{name}': no prefabs assigned.", this);
-            return;
-        }
+        if (prefabs == null || prefabs.Length == 0) return;
 
         _pool = new Dictionary<GameObject, Queue<GameObject>>();
         foreach (var prefab in prefabs)
@@ -53,11 +49,8 @@ public class PedestrianSpawner : MonoBehaviour
                 queue.Enqueue(go);
             }
             _pool[prefab] = queue;
-            Debug.Log($"[PedestrianSpawner] '{name}': pooled {poolSizePerPrefab}x '{prefab.name}'.", this);
         }
 
-        if (groups == null || groups.Length == 0)
-            Debug.LogWarning($"[PedestrianSpawner] '{name}': no direction groups configured.", this);
 
         _nextSpawnInterval = 0f;
     }
@@ -93,7 +86,6 @@ public class PedestrianSpawner : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning($"[PedestrianSpawner] '{name}' [{group.label}]: all pools exhausted — skipping tick.", this);
     }
 
     private int PickGroup()
@@ -119,7 +111,6 @@ public class PedestrianSpawner : MonoBehaviour
         var ctrl = go.GetComponent<PedestrianController>();
         if (ctrl == null)
         {
-            Debug.LogError($"[PedestrianSpawner] '{name}': '{go.name}' missing PedestrianController — add it to the prefab.", go);
             go.transform.SetParent(_poolRoot.transform);
             returnQueue.Enqueue(go);
             return;
@@ -142,11 +133,9 @@ public class PedestrianSpawner : MonoBehaviour
             go.SetActive(false);
             go.transform.SetParent(_poolRoot.transform);
             returnQueue.Enqueue(go);
-            Debug.Log($"[PedestrianSpawner] '{name}' [{group.label}]: '{go.name}' returned to pool.", this);
         };
         spawnable.OnDestinationReached += callback;
 
         go.SetActive(true);
-        Debug.Log($"[PedestrianSpawner] '{name}' [{group.label}]: spawned '{go.name}'.", this);
     }
 }
