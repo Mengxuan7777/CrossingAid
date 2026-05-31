@@ -3,16 +3,25 @@ using System.Collections;
 using UnityEngine;
 
 public enum SignalDirection { NorthSouth, EastWest }
+public enum PedestrianLightState { Walk, DontWalk }
 
 public class IntersectionSignalController : MonoBehaviour
 {
     public static IntersectionSignalController Instance { get; private set; }
 
-    [Header("North-South Signal Group")]
+    [Header("North-South Vehicle Lights")]
     public TrafficLightView[] northSouthLights;
 
-    [Header("East-West Signal Group")]
+    [Header("East-West Vehicle Lights")]
     public TrafficLightView[] eastWestLights;
+
+    [Header("Pedestrian Lights — crossing the N-S road")]
+    [Tooltip("Walk when N-S vehicles are Red.")]
+    public PedestrianLightView[] northSouthCrossingPedLights;
+
+    [Header("Pedestrian Lights — crossing the E-W road")]
+    [Tooltip("Walk when E-W vehicles are Red.")]
+    public PedestrianLightView[] eastWestCrossingPedLights;
 
     [Header("Timing")]
     public float greenDuration = 10f;
@@ -21,6 +30,8 @@ public class IntersectionSignalController : MonoBehaviour
 
     public event Action<VehicleLightState> OnNorthSouthChanged;
     public event Action<VehicleLightState> OnEastWestChanged;
+    public event Action<PedestrianLightState> OnNorthSouthCrossingChanged;
+    public event Action<PedestrianLightState> OnEastWestCrossingChanged;
 
     private VehicleLightState _northSouthState = VehicleLightState.Red;
     private VehicleLightState _eastWestState = VehicleLightState.Red;
@@ -49,6 +60,11 @@ public class IntersectionSignalController : MonoBehaviour
 
     private IEnumerator SignalLoop()
     {
+        // Both vehicle directions start Red — initialize ped signals to Walk for both crossings.
+        // SetNorthSouth(Green) below will immediately flip northSouthCrossing to DontWalk.
+        SetPedGroup(northSouthCrossingPedLights, PedestrianLightState.Walk);
+        SetPedGroup(eastWestCrossingPedLights, PedestrianLightState.Walk);
+
         while (true)
         {
             SetNorthSouth(VehicleLightState.Green);
@@ -78,6 +94,10 @@ public class IntersectionSignalController : MonoBehaviour
         _northSouthState = state;
         OnNorthSouthChanged?.Invoke(state);
         SetLightGroup(northSouthLights, state);
+
+        PedestrianLightState pedState = state == VehicleLightState.Red ? PedestrianLightState.Walk : PedestrianLightState.DontWalk;
+        OnNorthSouthCrossingChanged?.Invoke(pedState);
+        SetPedGroup(northSouthCrossingPedLights, pedState);
     }
 
     private void SetEastWest(VehicleLightState state)
@@ -86,9 +106,20 @@ public class IntersectionSignalController : MonoBehaviour
         _eastWestState = state;
         OnEastWestChanged?.Invoke(state);
         SetLightGroup(eastWestLights, state);
+
+        PedestrianLightState pedState = state == VehicleLightState.Red ? PedestrianLightState.Walk : PedestrianLightState.DontWalk;
+        OnEastWestCrossingChanged?.Invoke(pedState);
+        SetPedGroup(eastWestCrossingPedLights, pedState);
     }
 
     private void SetLightGroup(TrafficLightView[] group, VehicleLightState state)
+    {
+        if (group == null) return;
+        for (int i = 0; i < group.Length; i++)
+            group[i]?.SetState(state);
+    }
+
+    private void SetPedGroup(PedestrianLightView[] group, PedestrianLightState state)
     {
         if (group == null) return;
         for (int i = 0; i < group.Length; i++)
