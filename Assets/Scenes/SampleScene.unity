@@ -396,7 +396,7 @@ MonoBehaviour:
   crossingVehicleDirection: 0
   curbRenderer: {fileID: 132155589}
   materialIndex: 0
-  safeMaterial: {fileID: 2100000, guid: 5b57b6f50ff2ea54db4dabc306f4d4b8, type: 2}
+  safeMaterial: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
   unsafeMaterial: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
   logger: {fileID: 639408458}
 --- !u!23 &132155589 stripped
@@ -1370,9 +1370,7 @@ GameObject:
   - component: {fileID: 439911176}
   - component: {fileID: 439911175}
   - component: {fileID: 439911174}
-  - component: {fileID: 439911180}
   - component: {fileID: 439911179}
-  - component: {fileID: 439911178}
   - component: {fileID: 439911177}
   - component: {fileID: 439911181}
   m_Layer: 0
@@ -1444,21 +1442,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Timeout: 10
   m_XROrigin: {fileID: 439911175}
---- !u!114 &439911178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439911173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 439911180}
-  m_MinHeight: 0
-  m_MaxHeight: Infinity
 --- !u!143 &439911179
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1485,49 +1468,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &439911180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439911173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_System: {fileID: 439911177}
-  m_MoveSpeed: 1.2
-  m_EnableStrafe: 1
-  m_EnableFly: 0
-  m_UseGravity: 1
-  m_GravityApplicationMode: 0
-  m_ForwardSource: {fileID: 319368122}
-  m_LeftHandMoveAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Hand Move
-      m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: caeb6c36-a973-4aee-a5ff-98b7c57be236
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_RightHandMoveAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Hand Move
-      m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: 913ece74-fce5-42a4-905d-24b56d088e89
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &439911181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1566,9 +1506,9 @@ MonoBehaviour:
     m_Reference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   deadzone: 0.1
   minSpeed: 0.3
-  maxSpeed: 1.5
-  speedCurveExponent: 2
-  turnSpeed: 15
+  maxSpeed: 2
+  speedCurveExponent: 2.96
+  turnSpeed: 60
   gravity: -9.81
   cameraTransform: {fileID: 903775743}
 --- !u!1 &461718374
@@ -1684,6 +1624,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1321747426}
+  - {fileID: 1921195694}
   - {fileID: 1364438637}
   - {fileID: 868460913}
   - {fileID: 767966720}
@@ -2358,7 +2299,7 @@ MonoBehaviour:
   crossingVehicleDirection: 1
   curbRenderer: {fileID: 712925512}
   materialIndex: 0
-  safeMaterial: {fileID: 2100000, guid: 5b57b6f50ff2ea54db4dabc306f4d4b8, type: 2}
+  safeMaterial: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
   unsafeMaterial: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
   logger: {fileID: 0}
 --- !u!1 &720346921
@@ -2762,9 +2703,9 @@ MonoBehaviour:
   figureRenderers:
   - {fileID: 36429225}
   - {fileID: 1802631356}
-  handOn: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
+  handOn: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
   handOff: {fileID: 2100000, guid: 2051c538508fd2e4e9d6d5aacf7584a1, type: 2}
-  figureOn: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
+  figureOn: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
   figureOff: {fileID: 2100000, guid: 2051c538508fd2e4e9d6d5aacf7584a1, type: 2}
 --- !u!1 &839623380
 GameObject:
@@ -3268,7 +3209,7 @@ MonoBehaviour:
   - {fileID: 8491697322178032341}
   - {fileID: 3563365519518851396}
   - {fileID: 9129622925095963007}
-  greenMaterial: {fileID: 2100000, guid: 5b57b6f50ff2ea54db4dabc306f4d4b8, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
   defaultMaterial: {fileID: -5209386559919585115, guid: 7255bca5b560f554d85631dfdc9c8d5f, type: 3}
   logger: {fileID: 639408458}
 --- !u!1 &1265320339
@@ -4038,8 +3979,8 @@ Transform:
   m_GameObject: {fileID: 1321747425}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -19.403, y: 3.51, z: -1.894}
-  m_LocalScale: {x: 0.2514093, y: 1, z: 0.1627164}
+  m_LocalPosition: {x: -20.209, y: 2.635, z: -1.628}
+  m_LocalScale: {x: 0.08616802, y: 1.4695, z: 0.070879266}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 529002473}
@@ -4660,8 +4601,8 @@ Transform:
   m_GameObject: {fileID: 1542988257}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.23, y: 0, z: 0.511}
-  m_LocalScale: {x: 0.07, y: 1, z: 0.13430999}
+  m_LocalPosition: {x: 0.12, y: 0, z: 0.511}
+  m_LocalScale: {x: 0.1, y: 1, z: 0.13430999}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 319368122}
@@ -4755,12 +4696,15 @@ MonoBehaviour:
   activeZones:
   - {fileID: 1810201945}
   - {fileID: 767966722}
-  lookAwayAngleThreshold: 25
-  lookAwayDuration: 3
-  pulseFrequency: 1
-  pulseMinScale: 0.805
+  cueSide: 2
+  lookAwayAngleThreshold: 20
+  lookAwayDuration: 2
+  pulseFrequency: 1.5
+  pulseMinScale: 0.81
   pulseMaxScale: 1
   cueRenderer: {fileID: 1542988260}
+  cueColor: {r: 1, g: 0, b: 0, a: 1}
+  gradientAxis: 0
   logger: {fileID: 0}
 --- !u!1 &1615923697
 GameObject:
@@ -5175,8 +5119,8 @@ Transform:
   m_GameObject: {fileID: 1730620910}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -0.23, y: 0, z: 0.511}
-  m_LocalScale: {x: 0.07, y: 1, z: 0.13430999}
+  m_LocalPosition: {x: -0.12, y: 0, z: 0.511}
+  m_LocalScale: {x: 0.1, y: 1, z: 0.13430999}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 319368122}
@@ -5270,12 +5214,15 @@ MonoBehaviour:
   activeZones:
   - {fileID: 1810201945}
   - {fileID: 767966722}
+  cueSide: 1
   lookAwayAngleThreshold: 25
   lookAwayDuration: 3
-  pulseFrequency: 1
-  pulseMinScale: 0.805
+  pulseFrequency: 1.5
+  pulseMinScale: 0.81
   pulseMaxScale: 1
   cueRenderer: {fileID: 1730620913}
+  cueColor: {r: 1, g: 0, b: 0, a: 1}
+  gradientAxis: 0
   logger: {fileID: 0}
 --- !u!1 &1753946322
 GameObject:
@@ -5312,10 +5259,10 @@ MonoBehaviour:
   eastWestLights:
   - {fileID: 1616982932}
   - {fileID: 371260192}
-  northSouthCrossingPedLights: []
-  eastWestCrossingPedLights:
+  northSouthCrossingPedLights:
   - {fileID: 6695409333322756281}
   - {fileID: 838129706}
+  eastWestCrossingPedLights: []
   greenDuration: 10
   yellowDuration: 3
   allRedDuration: 2
@@ -5688,6 +5635,117 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863980424}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1921195693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1921195694}
+  - component: {fileID: 1921195697}
+  - component: {fileID: 1921195696}
+  - component: {fileID: 1921195695}
+  m_Layer: 6
+  m_Name: Signal (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1921195694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921195693}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -20.022, y: 6.684, z: -7.131}
+  m_LocalScale: {x: 0.16042663, y: 1.4695, z: 0.08337528}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 529002473}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &1921195695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921195693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: TrafficLight
+  aoiGroup: SafetyCue
+--- !u!65 &1921195696
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921195693}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.000001, y: 2.2204466e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1921195697
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921195693}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1922588741
 GameObject:
   m_ObjectHideFlags: 0
@@ -44939,9 +44997,9 @@ MonoBehaviour:
   figureRenderers:
   - {fileID: 6199729542207118290}
   - {fileID: 8794316752041083036}
-  handOn: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
+  handOn: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
   handOff: {fileID: 2100000, guid: 2051c538508fd2e4e9d6d5aacf7584a1, type: 2}
-  figureOn: {fileID: 2100000, guid: 54561dd4f08a11e41b71e5fb483f521f, type: 2}
+  figureOn: {fileID: 2100000, guid: 7034fa8153a2dd249b4eccc2c0be30f3, type: 2}
   figureOff: {fileID: 2100000, guid: 2051c538508fd2e4e9d6d5aacf7584a1, type: 2}
 --- !u!1 &6699074846685592141
 GameObject:

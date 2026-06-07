@@ -74,11 +74,12 @@ public class XRPlayerMover : MonoBehaviour
             float t = Mathf.InverseLerp(deadzone, 1f, pressure);
             float speed = Mathf.Lerp(minSpeed, maxSpeed, Mathf.Pow(t, speedCurveExponent));
 
-            Vector3 forward = transform.forward;
+            Vector3 forward = cameraTransform.forward;
             forward.y = 0f;
+            if (forward.sqrMagnitude < 0.001f) forward = transform.forward;
             forward.Normalize();
 
-            Vector3 right = transform.right;
+            Vector3 right = cameraTransform.right;
             right.y = 0f;
             right.Normalize();
 
@@ -89,11 +90,17 @@ public class XRPlayerMover : MonoBehaviour
         move.y = _verticalVelocity;
         _cc.Move(move * Time.deltaTime);
 
-        if (turnAction.action != null)
+        if (turnAction.action != null && cameraTransform != null)
         {
             float turnInput = turnAction.action.ReadValue<Vector2>().x;
             if (Mathf.Abs(turnInput) > deadzone)
+            {
+                Vector3 cameraPosBefore = cameraTransform.position;
+                _cc.enabled = false;
                 transform.Rotate(0f, turnInput * turnSpeed * Time.deltaTime, 0f, Space.World);
+                transform.position -= cameraTransform.position - cameraPosBefore;
+                _cc.enabled = true;
+            }
         }
     }
 }

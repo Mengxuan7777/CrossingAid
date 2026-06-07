@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum CueSide { Both, Left, Right }
+
 public class PeripheralCue : MonoBehaviour
 {
     [Header("References")]
@@ -12,6 +14,10 @@ public class PeripheralCue : MonoBehaviour
     [Header("Active Zones")]
     [Tooltip("Cue only activates when the player is inside at least one of these trigger colliders.")]
     public Collider[] activeZones;
+
+    [Header("Side")]
+    [Tooltip("Which physical side this cue is on.\nLeft cue pulses when player looks Right.\nRight cue pulses when player looks Left.\nBoth pulses for any look-away.")]
+    public CueSide cueSide = CueSide.Both;
 
     [Header("Gaze")]
     [Tooltip("Angle in degrees between body forward and gaze forward above which the player is considered looking away.")]
@@ -36,6 +42,14 @@ public class PeripheralCue : MonoBehaviour
     [Header("Renderer")]
     public Renderer cueRenderer;
 
+    [Header("Color")]
+    [Tooltip("Color of the cue. Alpha is applied on top of the gradient fade.")]
+    public Color cueColor = Color.yellow;
+
+    [Tooltip("Which UV axis the gradient fades along. U = left-right, V = bottom-top.")]
+    public enum GradientAxis { U, V }
+    public GradientAxis gradientAxis = GradientAxis.U;
+
     [Header("Logger (optional)")]
     public EyeTrackingLogger logger;
 
@@ -47,7 +61,48 @@ public class PeripheralCue : MonoBehaviour
     {
         cueRenderer ??= GetComponent<Renderer>();
         _originalScale = transform.localScale;
+        BuildGradientTexture();
         SetVisible(false);
+    }
+
+    private void BuildGradientTexture()
+    {
+        if (cueRenderer == null) return;
+
+        const int size = 256;
+        Texture2D tex;
+        Color[] pixels;
+
+        if (gradientAxis == GradientAxis.U)
+        {
+            tex = new Texture2D(size, 1, TextureFormat.RGBA32, false);
+            pixels = new Color[size];
+            for (int i = 0; i < size; i++)
+            {
+                float a = 1f - (float)i / (size - 1);
+                a = a * a;
+                pixels[i] = new Color(cueColor.r, cueColor.g, cueColor.b, cueColor.a * a);
+            }
+        }
+        else
+        {
+            tex = new Texture2D(1, size, TextureFormat.RGBA32, false);
+            pixels = new Color[size];
+            for (int i = 0; i < size; i++)
+            {
+                float a = 1f - (float)i / (size - 1);
+                a = a * a;
+                pixels[i] = new Color(cueColor.r, cueColor.g, cueColor.b, cueColor.a * a);
+            }
+        }
+
+        tex.SetPixels(pixels);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.Apply();
+
+        Material mat = new Material(cueRenderer.sharedMaterial);
+        mat.mainTexture = tex;
+        cueRenderer.material = mat;
     }
 
     private void Update()
@@ -84,7 +139,10 @@ public class PeripheralCue : MonoBehaviour
         Vector3 pos = playerOrigin.position;
         foreach (var zone in activeZones)
         {
-            if (zone != null && zone.enabled && zone.bounds.Contains(pos))
+            if (zone == null || !zone.enabled) continue;
+            Bounds b = zone.bounds;
+            if (pos.x >= b.min.x && pos.x <= b.max.x &&
+                pos.z >= b.min.z && pos.z <= b.max.z)
                 return true;
         }
         return false;
@@ -104,7 +162,16 @@ public class PeripheralCue : MonoBehaviour
         if (gazeForward.sqrMagnitude < 0.001f) return false;
         gazeForward.Normalize();
 
-        return Vector3.Angle(bodyForward, gazeForward) > lookAwayAngleThreshold;
+        if (Vector3.Angle(bodyForward, gazeForward) <= lookAwayAngleThreshold) return false;
+
+        if (cueSide == CueSide.Both) return true;
+
+        // Positive dot = gaze is to the right of body forward; negative = left
+        Vector3 bodyRight = Vector3.Cross(Vector3.up, bodyForward);
+        float dotRight = Vector3.Dot(gazeForward, bodyRight);
+
+        return cueSide == CueSide.Right ? dotRight < 0f   // right cue: player looks left
+                                        : dotRight > 0f;  // left cue:  player looks right
     }
 
     private void ApplyPulse()
