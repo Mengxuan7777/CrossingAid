@@ -1,0 +1,102 @@
+{
+  "participantId": "P001",
+  "sessionId": "S001",
+  "trials": [
+    {
+      "trialNumber": 1,
+      "conditionName": "Unassisted_None_Safe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "None",
+      "crossingScenario": "Safe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 2,
+      "conditionName": "Unassisted_None_Unsafe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "None",
+      "crossingScenario": "Unsafe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 3,
+      "conditionName": "Unassisted_Conversation_Safe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "Conversation",
+      "crossingScenario": "Safe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 4,
+      "conditionName": "Unassisted_Conversation_Unsafe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "Conversation",
+      "crossingScenario": "Unsafe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 5,
+      "conditionName": "Unassisted_TextReading_Safe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "TextReading",
+      "crossingScenario": "Safe",
+      "distractionText": "Please read this message carefully: The quick brown fox jumps over the lazy dog. Stay alert while crossing the street."
+    },
+    {
+      "trialNumber": 6,
+      "conditionName": "Unassisted_TextReading_Unsafe",
+      "assistanceLevel": "Unassisted",
+      "distraction": "TextReading",
+      "crossingScenario": "Unsafe",
+      "distractionText": "Please read this message carefully: The quick brown fox jumps over the lazy dog. Stay alert while crossing the street."
+    },
+    {
+      "trialNumber": 7,
+      "conditionName": "FullyAssisted_None_Safe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "None",
+      "crossingScenario": "Safe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 8,
+      "conditionName": "FullyAssisted_None_Unsafe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "None",
+      "crossingScenario": "Unsafe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 9,
+      "conditionName": "FullyAssisted_Conversation_Safe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "Conversation",
+      "crossingScenario": "Safe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 10,
+      "conditionName": "FullyAssisted_Conversation_Unsafe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "Conversation",
+      "crossingScenario": "Unsafe",
+      "distractionText": ""
+    },
+    {
+      "trialNumber": 11,
+      "conditionName": "FullyAssisted_TextReading_Safe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "TextReading",
+      "crossingScenario": "Safe",
+      "distractionText": "Please read this message carefully: The quick brown fox jumps over the lazy dog. Stay alert while crossing the street."
+    },
+    {
+      "trialNumber": 12,
+      "conditionName": "FullyAssisted_TextReading_Unsafe",
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "TextReading",
+      "crossingScenario": "Unsafe",
+      "distractionText": "Please read this message carefully: The quick brown fox jumps over the lazy dog. Stay alert while crossing the street."
+    }
+  ]
+}

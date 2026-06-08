@@ -65,6 +65,9 @@ public class PeripheralCue : MonoBehaviour
         SetVisible(false);
     }
 
+    [ContextMenu("Rebuild Gradient")]
+    public void RebuildGradient() => BuildGradientTexture();
+
     private void BuildGradientTexture()
     {
         if (cueRenderer == null) return;
@@ -100,7 +103,10 @@ public class PeripheralCue : MonoBehaviour
         tex.wrapMode = TextureWrapMode.Clamp;
         tex.Apply();
 
-        Material mat = new Material(cueRenderer.sharedMaterial);
+        Material source = cueRenderer.sharedMaterial;
+        Material mat = source != null
+            ? new Material(source)
+            : new Material(Shader.Find("Unlit/Transparent"));
         mat.mainTexture = tex;
         cueRenderer.material = mat;
     }

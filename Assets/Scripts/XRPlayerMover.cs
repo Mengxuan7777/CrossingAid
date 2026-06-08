@@ -38,6 +38,8 @@ public class XRPlayerMover : MonoBehaviour
     private CharacterController _cc;
     private float _verticalVelocity;
 
+    public void ResetVelocity() { _verticalVelocity = -0.5f; }
+
     private void Awake()
     {
         _cc = GetComponent<CharacterController>();

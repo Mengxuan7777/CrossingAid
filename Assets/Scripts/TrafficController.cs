@@ -55,15 +55,51 @@ public class IntersectionSignalController : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SignalLoop());
-    }
-
-    private IEnumerator SignalLoop()
-    {
-        // Both vehicle directions start Red — initialize ped signals to Walk for both crossings.
-        // SetNorthSouth(Green) below will immediately flip northSouthCrossing to DontWalk.
         SetPedGroup(northSouthCrossingPedLights, PedestrianLightState.Walk);
         SetPedGroup(eastWestCrossingPedLights, PedestrianLightState.Walk);
+        StartCoroutine(SignalLoopFrom(false));
+    }
+
+    // Starts (or restarts) the signal cycle from a specific half.
+    // ewGoesFirst=true  → EW turns Green first (NS stays Red — safe for NS-road crossers).
+    // ewGoesFirst=false → NS turns Green first (EW stays Red — safe for EW-road crossers).
+    public void StartCycleFrom(bool ewGoesFirst)
+    {
+        StopAllCoroutines();
+        ForceSignalState(
+            ewGoesFirst ? VehicleLightState.Red   : VehicleLightState.Green,
+            ewGoesFirst ? VehicleLightState.Green : VehicleLightState.Red);
+        StartCoroutine(SignalLoopFrom(ewGoesFirst));
+    }
+
+    // Immediately sets both signal directions and fires all dependent events/lights.
+    private void ForceSignalState(VehicleLightState ns, VehicleLightState ew)
+    {
+        _northSouthState = ns;
+        _eastWestState   = ew;
+        OnNorthSouthChanged?.Invoke(ns);
+        OnEastWestChanged?.Invoke(ew);
+        SetLightGroup(northSouthLights, ns);
+        SetLightGroup(eastWestLights, ew);
+        PedestrianLightState nsPed = ns == VehicleLightState.Red ? PedestrianLightState.Walk : PedestrianLightState.DontWalk;
+        PedestrianLightState ewPed = ew == VehicleLightState.Red ? PedestrianLightState.Walk : PedestrianLightState.DontWalk;
+        OnNorthSouthCrossingChanged?.Invoke(nsPed);
+        OnEastWestCrossingChanged?.Invoke(ewPed);
+        SetPedGroup(northSouthCrossingPedLights, nsPed);
+        SetPedGroup(eastWestCrossingPedLights, ewPed);
+    }
+
+    private IEnumerator SignalLoopFrom(bool ewGoesFirst)
+    {
+        if (ewGoesFirst)
+        {
+            // EW is already Green; complete the EW half before entering the main loop.
+            yield return new WaitForSeconds(greenDuration);
+            SetEastWest(VehicleLightState.Yellow);
+            yield return new WaitForSeconds(yellowDuration);
+            SetEastWest(VehicleLightState.Red);
+            yield return new WaitForSeconds(allRedDuration);
+        }
 
         while (true)
         {
