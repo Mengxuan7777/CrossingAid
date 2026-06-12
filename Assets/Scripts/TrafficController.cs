@@ -60,16 +60,49 @@ public class IntersectionSignalController : MonoBehaviour
         StartCoroutine(SignalLoopFrom(false));
     }
 
-    // Starts (or restarts) the signal cycle from a specific half.
-    // ewGoesFirst=true  → EW turns Green first (NS stays Red — safe for NS-road crossers).
-    // ewGoesFirst=false → NS turns Green first (EW stays Red — safe for EW-road crossers).
-    public void StartCycleFrom(bool ewGoesFirst)
+    // Starts (or restarts) the signal cycle so that the player's road has its
+    // "walk" light (vehicle Red) right now, with secondsRemaining left before it changes.
+    // nsRoadIsSafe=true  → NS is Red/Walk now (EW is Green), holds for secondsRemaining.
+    // nsRoadIsSafe=false → EW is Red/Walk now (NS is Green), holds for secondsRemaining.
+    public void StartCycleWithRemaining(bool nsRoadIsSafe, float secondsRemaining)
     {
         StopAllCoroutines();
         ForceSignalState(
-            ewGoesFirst ? VehicleLightState.Red   : VehicleLightState.Green,
-            ewGoesFirst ? VehicleLightState.Green : VehicleLightState.Red);
-        StartCoroutine(SignalLoopFrom(ewGoesFirst));
+            nsRoadIsSafe ? VehicleLightState.Red   : VehicleLightState.Green,
+            nsRoadIsSafe ? VehicleLightState.Green : VehicleLightState.Red);
+        StartCoroutine(SignalLoopWithInitialHold(nsRoadIsSafe, Mathf.Max(0f, secondsRemaining)));
+    }
+
+    private IEnumerator SignalLoopWithInitialHold(bool nsRoadIsSafe, float holdSeconds)
+    {
+        yield return new WaitForSeconds(holdSeconds);
+
+        if (nsRoadIsSafe)
+        {
+            // NS is Red/Walk, EW is Green — bring EW down to Red.
+            SetEastWest(VehicleLightState.Yellow);
+            yield return new WaitForSeconds(yellowDuration);
+            SetEastWest(VehicleLightState.Red);
+            yield return new WaitForSeconds(allRedDuration);
+        }
+        else
+        {
+            // EW is Red/Walk, NS is Green — bring NS down to Red, then run EW's full green phase.
+            SetNorthSouth(VehicleLightState.Yellow);
+            yield return new WaitForSeconds(yellowDuration);
+            SetNorthSouth(VehicleLightState.Red);
+            yield return new WaitForSeconds(allRedDuration);
+
+            SetEastWest(VehicleLightState.Green);
+            yield return new WaitForSeconds(greenDuration);
+            SetEastWest(VehicleLightState.Yellow);
+            yield return new WaitForSeconds(yellowDuration);
+            SetEastWest(VehicleLightState.Red);
+            yield return new WaitForSeconds(allRedDuration);
+        }
+
+        // Both directions are now Red — resume the normal alternating loop, NS green first.
+        yield return SignalLoopFrom(false);
     }
 
     // Immediately sets both signal directions and fires all dependent events/lights.

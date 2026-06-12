@@ -18,6 +18,9 @@ public class CurbIndicator : MonoBehaviour
     [Tooltip("Applied when not safe to cross (vehicle signal is Green or Yellow).")]
     public Material unsafeMaterial;
 
+    [Tooltip("Applied when this indicator is disabled (Unassisted trials).")]
+    public Material defaultMaterial;
+
     [Header("Logger (optional)")]
     public EyeTrackingLogger logger;
 
@@ -37,6 +40,7 @@ public class CurbIndicator : MonoBehaviour
     private void OnDisable()
     {
         Unsubscribe();
+        ApplyMaterial(defaultMaterial, "DISABLED");
     }
 
     private void Subscribe()

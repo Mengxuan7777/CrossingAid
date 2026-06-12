@@ -1,0 +1,72 @@
+{
+  "participantId": "P004",
+  "sessionId": "S001",
+  "trials": [
+    {
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "TextReading",
+      "pairId": "pair_B",
+      "distractionText": "A new study found that phone use reduces a pedestrian's situational awareness by 61 percent.",
+      "questionText": "",
+      "correctAnswer": "",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 1,
+      "conditionName": "FullyAssisted_TextReading[pair_B]"
+    },
+    {
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "Conversation",
+      "pairId": "pair_B",
+      "distractionText": "",
+      "questionText": "By how much does phone use reduce pedestrian situational awareness?",
+      "correctAnswer": "61 percent",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 2,
+      "conditionName": "FullyAssisted_Conversation[pair_B]"
+    },
+    {
+      "assistanceLevel": "Unassisted",
+      "distraction": "None",
+      "pairId": "",
+      "distractionText": "",
+      "questionText": "",
+      "correctAnswer": "",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 3,
+      "conditionName": "Unassisted_None"
+    },
+    {
+      "assistanceLevel": "Unassisted",
+      "distraction": "TextReading",
+      "pairId": "pair_A",
+      "distractionText": "The city's latest traffic safety report shows pedestrian fatalities at signalized intersections dropped by 34 percent last year.",
+      "questionText": "",
+      "correctAnswer": "",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 4,
+      "conditionName": "Unassisted_TextReading[pair_A]"
+    },
+    {
+      "assistanceLevel": "Unassisted",
+      "distraction": "Conversation",
+      "pairId": "pair_A",
+      "distractionText": "",
+      "questionText": "By what percentage did pedestrian fatalities drop last year?",
+      "correctAnswer": "34 percent",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 5,
+      "conditionName": "Unassisted_Conversation[pair_A]"
+    },
+    {
+      "assistanceLevel": "FullyAssisted",
+      "distraction": "None",
+      "pairId": "",
+      "distractionText": "",
+      "questionText": "",
+      "correctAnswer": "",
+      "signalSecondsRemaining": 8.0,
+      "trialNumber": 6,
+      "conditionName": "FullyAssisted_None"
+    }
+  ]
+}

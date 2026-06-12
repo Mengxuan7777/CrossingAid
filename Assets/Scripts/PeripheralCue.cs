@@ -68,6 +68,12 @@ public class PeripheralCue : MonoBehaviour
     [ContextMenu("Rebuild Gradient")]
     public void RebuildGradient() => BuildGradientTexture();
 
+    private void OnDisable()
+    {
+        _lookAwayTimer = 0f;
+        if (_cueVisible) SetVisible(false);
+    }
+
     private void BuildGradientTexture()
     {
         if (cueRenderer == null) return;

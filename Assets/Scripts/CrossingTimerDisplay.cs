@@ -46,6 +46,7 @@ public class CrossingTimerDisplay : MonoBehaviour
     private void OnDisable()
     {
         Unsubscribe();
+        ApplyMaterialToAll(defaultMaterial);
     }
 
     private void Subscribe()
