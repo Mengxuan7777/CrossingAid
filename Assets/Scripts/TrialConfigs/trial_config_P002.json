@@ -6,66 +6,90 @@
       "assistanceLevel": "FullyAssisted",
       "distraction": "None",
       "pairId": "",
-      "distractionText": "",
-      "questionText": "",
-      "correctAnswer": "",
+      "distractionTexts": [],
+      "questionTexts": [],
+      "correctAnswers": [],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 1,
+      "trialID": "FullyAssisted-NoDistraction",
       "conditionName": "FullyAssisted_None"
     },
     {
       "assistanceLevel": "Unassisted",
       "distraction": "TextReading",
       "pairId": "pair_A",
-      "distractionText": "The city's latest traffic safety report shows pedestrian fatalities at signalized intersections dropped by 34 percent last year. Officials installed 56 new countdown timers at major crossings and plan to expand the program to 120 more intersections by next spring.",
-      "questionText": "",
-      "correctAnswer": "",
+      "distractionTexts": [
+        "Pedestrian fatalities at signalized intersections dropped by 34 percent last year.",
+        "56 new countdown timers installed at major crossings to help reduce accidents.",
+        "The city plans to add the countdown timer program to 120 intersections by next spring."
+      ],
+      "questionTexts": [],
+      "correctAnswers": [],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 2,
+      "trialID": "Unassisted-TextDistraction",
       "conditionName": "Unassisted_TextReading[pair_A]"
     },
     {
       "assistanceLevel": "Unassisted",
       "distraction": "Conversation",
       "pairId": "pair_A",
-      "distractionText": "",
-      "questionText": "By what percentage did pedestrian fatalities drop last year?",
-      "correctAnswer": "34 percent",
+      "distractionTexts": [],
+      "questionTexts": [
+        "By what percentage did pedestrian fatalities drop last year?",
+        "How many new countdown timers were installed at major crossings?",
+        "How many intersections will get the countdown timer program by next spring?"
+      ],
+      "correctAnswers": [
+        "34 percent",
+        "56",
+        "120"
+      ],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 3,
+      "trialID": "Unassisted-ConversationDistraction",
       "conditionName": "Unassisted_Conversation[pair_A]"
     },
     {
       "assistanceLevel": "Unassisted",
       "distraction": "None",
       "pairId": "",
-      "distractionText": "",
-      "questionText": "",
-      "correctAnswer": "",
+      "distractionTexts": [],
+      "questionTexts": [],
+      "correctAnswers": [],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 4,
+      "trialID": "Unassisted-NoDistraction",
       "conditionName": "Unassisted_None"
     },
     {
       "assistanceLevel": "FullyAssisted",
       "distraction": "TextReading",
       "pairId": "pair_B",
-      "distractionText": "A new study found that phone use reduces a pedestrian's situational awareness by 61 percent. Researchers observed 2,400 crossings over a six-week period. Hands-free devices lowered risk but still resulted in 27 percent reduced awareness compared to undistracted walking.",
-      "questionText": "",
-      "correctAnswer": "",
+      "distractionTexts": [
+        "A study found that phone use reduces a pedestrian's situational awareness by 61 percent.",
+        "Researchers observed 2,400 crossings over a six-week period to reach this conclusion.",
+        "Hands-free devices resulted in 27 percent reduced awareness compared to undistracted walking."
+      ],
+      "questionTexts": [],
+      "correctAnswers": [],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 5,
+      "trialID": "FullyAssisted-TextDistraction",
       "conditionName": "FullyAssisted_TextReading[pair_B]"
     },
     {
       "assistanceLevel": "FullyAssisted",
       "distraction": "Conversation",
       "pairId": "pair_B",
-      "distractionText": "",
-      "questionText": "By how much does phone use reduce pedestrian situational awareness?",
-      "correctAnswer": "61 percent",
+      "distractionTexts": [],
+      "questionTexts": [
+        "By how much does phone use reduce pedestrian situational awareness?",
+        "How many weeks did the researchers spend to observe 2400 crossings?",
+        "By how much did hands-free devices reduce awareness?"
+      ],
+      "correctAnswers": [
+        "61 percent",
+        "six weeks",
+        "27 percent"
+      ],
       "signalSecondsRemaining": 8.0,
-      "trialNumber": 6,
+      "trialID": "FullyAssisted-ConversationDistraction",
       "conditionName": "FullyAssisted_Conversation[pair_B]"
     }
   ]

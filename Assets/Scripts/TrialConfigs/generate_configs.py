@@ -23,6 +23,11 @@ Traffic signal:
   player's "walk" signal when the trial starts, before it changes. Defaults
   to 8.0; edit per trial as needed for the experiment design.
 
+TextReading messages:
+  `distractionTexts` is a list of up to 3 messages, shown one at a time
+  (each for textDisplayDuration seconds, with a textDisplayInterval gap
+  between them -- configured in TrialSequencer's Inspector).
+
 Usage:
     python generate_configs.py
 
@@ -35,24 +40,42 @@ import json, copy, os
 
 PAIRS = {
     "pair_A": {
-        "text": (
-            "The city's latest traffic safety report shows pedestrian fatalities at "
-            "signalized intersections dropped by 34 percent last year. Officials installed "
-            "56 new countdown timers at major crossings and plan to expand the program to "
-            "120 more intersections by next spring."
-        ),
-        "question":      "By what percentage did pedestrian fatalities drop last year?",
-        "correctAnswer": "34 percent",
+        "texts": [
+            "Pedestrian fatalities at signalized intersections dropped by 34 percent last year.",
+
+            "56 new countdown timers installed at major crossings to help reduce accidents.",
+
+            "The city plans to add the countdown timer program to 120 intersections by next spring.",
+        ],
+        "questions": [
+            "By what percentage did pedestrian fatalities drop last year?",
+            "How many new countdown timers were installed at major crossings?",
+            "How many intersections will get the countdown timer program by next spring?",
+        ],
+        "correctAnswers": [
+            "34 percent",
+            "56",
+            "120",
+        ],
     },
     "pair_B": {
-        "text": (
-            "A new study found that phone use reduces a pedestrian's situational awareness "
-            "by 61 percent. Researchers observed 2,400 crossings over a six-week period. "
-            "Hands-free devices lowered risk but still resulted in 27 percent reduced "
-            "awareness compared to undistracted walking."
-        ),
-        "question":      "By how much does phone use reduce pedestrian situational awareness?",
-        "correctAnswer": "61 percent",
+        "texts": [
+            "A study found that phone use reduces a pedestrian's situational awareness by 61 percent.",
+
+            "Researchers observed 2,400 crossings over a six-week period to reach this conclusion.",
+
+            "Hands-free devices resulted in 27 percent reduced awareness compared to undistracted walking.",
+        ],
+        "questions": [
+            "By how much does phone use reduce pedestrian situational awareness?",
+            "How many weeks did the researchers spend to observe 2400 crossings?",
+            "By how much did hands-free devices reduce awareness?",
+        ],
+        "correctAnswers": [
+            "61 percent",
+            "six weeks",
+            "27 percent",
+        ],
     },
 }
 
@@ -93,9 +116,9 @@ def expand_unit(unit_idx: int) -> list:
             "assistanceLevel":       u["assistanceLevel"],
             "distraction":           "None",
             "pairId":                "",
-            "distractionText":       "",
-            "questionText":          "",
-            "correctAnswer":         "",
+            "distractionTexts":      [],
+            "questionTexts":         [],
+            "correctAnswers":        [],
             "signalSecondsRemaining": DEFAULT_SIGNAL_SECONDS_REMAINING,
         }]
     else:
@@ -105,35 +128,40 @@ def expand_unit(unit_idx: int) -> list:
             "assistanceLevel":       u["assistanceLevel"],
             "distraction":           "TextReading",
             "pairId":                u["pairId"],
-            "distractionText":       p["text"],
-            "questionText":          "",
-            "correctAnswer":         "",
+            "distractionTexts":      list(p["texts"]),
+            "questionTexts":         [],
+            "correctAnswers":        [],
             "signalSecondsRemaining": DEFAULT_SIGNAL_SECONDS_REMAINING,
         }
         call_trial = {
             "assistanceLevel":       u["assistanceLevel"],
             "distraction":           "Conversation",
             "pairId":                u["pairId"],
-            "distractionText":       "",
-            "questionText":          p["question"],
-            "correctAnswer":         p["correctAnswer"],
+            "distractionTexts":      [],
+            "questionTexts":         list(p["questions"]),
+            "correctAnswers":        list(p["correctAnswers"]),
             "signalSecondsRemaining": DEFAULT_SIGNAL_SECONDS_REMAINING,
         }
         return [text_trial, call_trial]
 
 
+DISTRACTION_LABELS = {
+    "None":         "NoDistraction",
+    "TextReading":  "TextDistraction",
+    "Conversation": "ConversationDistraction",
+}
+
+
 def build_config(participant_id: str, session_id: str, unit_order: list) -> dict:
     trials = []
-    trial_num = 1
     for unit_idx in unit_order:
         for t in expand_unit(unit_idx):
-            t["trialNumber"] = trial_num
+            t["trialID"] = f"{t['assistanceLevel']}-{DISTRACTION_LABELS[t['distraction']]}"
             t["conditionName"] = (
                 f"{t['assistanceLevel']}_{t['distraction']}"
                 + (f"[{t['pairId']}]" if t["pairId"] else "")
             )
             trials.append(t)
-            trial_num += 1
     return {"participantId": participant_id, "sessionId": session_id, "trials": trials}
 
 # ── Main ──────────────────────────────────────────────────────────────────────
