@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4245394049484692}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4053571891661392}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 4619114502241834}
   - component: {fileID: 33439954042057106}
   - component: {fileID: 23494710506222072}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WS1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 4155551610669330}
   - component: {fileID: 33889680820666730}
   - component: {fileID: 23765509061078952}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WS1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,8 @@ GameObject:
   - component: {fileID: 6849410429571225875}
   - component: {fileID: 7448235196862066856}
   - component: {fileID: 7513290301685677936}
-  m_Layer: 7
+  - component: {fileID: -864248470295929687}
+  m_Layer: 3
   m_Name: Suv
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +260,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4437866802666592}
@@ -275,7 +276,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 4.5
+  m_Speed: 3.6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60
@@ -325,6 +326,24 @@ MonoBehaviour:
   signalDirection: 0
   speed: 5
   waypointReachDistance: 0.5
+  followDistance: 8
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &-864248470295929687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316066872659042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: Car
+  aoiGroup: Vehicle
 --- !u!1 &1452828812988290
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,7 +355,7 @@ GameObject:
   - component: {fileID: 4443339095282570}
   - component: {fileID: 33861609599822388}
   - component: {fileID: 23723796944861894}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WS1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4689590173177002}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +468,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4703665852857634}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WPR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,7 +502,7 @@ GameObject:
   - component: {fileID: 4558922903010556}
   - component: {fileID: 33061079326571756}
   - component: {fileID: 23353983406572924}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WS1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +585,7 @@ GameObject:
   - component: {fileID: 4437866802666592}
   - component: {fileID: 33699027614704484}
   - component: {fileID: 23792442765804062}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Suv
   m_TagString: Untagged
   m_Icon: {fileID: 0}

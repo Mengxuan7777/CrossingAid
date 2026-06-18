@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4082608352312396}
   - component: {fileID: 33390331341361778}
   - component: {fileID: 23392190886631270}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4126580729256276}
   - component: {fileID: 33247330410727608}
   - component: {fileID: 23617547454017544}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4813700523518514}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 4847054564148120}
   - component: {fileID: 33446077380556030}
   - component: {fileID: 23669403857412988}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 4511891306636050}
   - component: {fileID: 33313349671617990}
   - component: {fileID: 23883178030669024}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +379,7 @@ GameObject:
   - component: {fileID: 4976771702573178}
   - component: {fileID: 33118756488881172}
   - component: {fileID: 23586253744426466}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 4901975678944776}
   - component: {fileID: 33967123475857000}
   - component: {fileID: 23887821973105398}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4054910354353158}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 4778644226647572}
   - component: {fileID: 33611279493952932}
   - component: {fileID: 23915159755037310}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4236497982017300}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WFP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -700,7 +700,7 @@ GameObject:
   - component: {fileID: 4236581477131460}
   - component: {fileID: 33441426190968798}
   - component: {fileID: 23281699094763268}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -783,7 +783,7 @@ GameObject:
   - component: {fileID: 4291680843443232}
   - component: {fileID: 33184551675659620}
   - component: {fileID: 23913969569922638}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 4662474412746668}
   - component: {fileID: 33616346268195810}
   - component: {fileID: 23884695884813988}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   - component: {fileID: 4752187166566714}
   - component: {fileID: 33732874553336594}
   - component: {fileID: 23692805085540120}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1034,7 +1034,8 @@ GameObject:
   - component: {fileID: 6343564963347540933}
   - component: {fileID: 8079358760829997898}
   - component: {fileID: 6815208683918806120}
-  m_Layer: 7
+  - component: {fileID: -4910675610007690674}
+  m_Layer: 3
   m_Name: Traffic B - BigSedan 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1051,7 +1052,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4385830690353564}
@@ -1072,8 +1073,12 @@ MonoBehaviour:
   waypoints: []
   stopLineWaypointIndex: 1
   signalDirection: 0
-  speed: 5
+  speed: 4
   waypointReachDistance: 0.5
+  followDistance: 8
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!195 &6343564963347540933
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1134,6 +1139,24 @@ MonoBehaviour:
   signalDirection: 0
   speed: 5
   waypointReachDistance: 0.5
+  followDistance: 4
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &-4910675610007690674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481879875828012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: Car
+  aoiGroup: Vehicle
 --- !u!1 &1483202902651448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1168,7 @@ GameObject:
   - component: {fileID: 4612206889689908}
   - component: {fileID: 33439767146991496}
   - component: {fileID: 23623865085131404}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1228,7 +1251,7 @@ GameObject:
   - component: {fileID: 4385830690353564}
   - component: {fileID: 33435967617895268}
   - component: {fileID: 23535586345156932}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Big_Sedan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1315,7 +1338,7 @@ GameObject:
   - component: {fileID: 4889445910754362}
   - component: {fileID: 33574600129695960}
   - component: {fileID: 23274003984855750}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1398,7 +1421,7 @@ GameObject:
   - component: {fileID: 4387768332066796}
   - component: {fileID: 33137996123776912}
   - component: {fileID: 23618852331379476}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1481,7 +1504,7 @@ GameObject:
   - component: {fileID: 4141897012930016}
   - component: {fileID: 33837356702252614}
   - component: {fileID: 23872293449004426}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1564,7 +1587,7 @@ GameObject:
   - component: {fileID: 4056140271210178}
   - component: {fileID: 33088993781365424}
   - component: {fileID: 23297512610722654}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1647,7 +1670,7 @@ GameObject:
   - component: {fileID: 4554473314672330}
   - component: {fileID: 33794751808380028}
   - component: {fileID: 23187029051961194}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1730,7 +1753,7 @@ GameObject:
   - component: {fileID: 4587962933216750}
   - component: {fileID: 33755572736079540}
   - component: {fileID: 23231247800598754}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1811,7 +1834,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4256641255421990}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1849,7 +1872,7 @@ GameObject:
   - component: {fileID: 4006644052058556}
   - component: {fileID: 33969564922776570}
   - component: {fileID: 23249938982536430}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1932,7 +1955,7 @@ GameObject:
   - component: {fileID: 4049368543286134}
   - component: {fileID: 33336966870184954}
   - component: {fileID: 23643157466663812}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

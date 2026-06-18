@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4885990326994052}
   - component: {fileID: 33949671619049782}
   - component: {fileID: 23929438378151068}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WC2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4931135919434634}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDF (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 4365865350025886}
   - component: {fileID: 33061615112873598}
   - component: {fileID: 23104365185564634}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WC2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4582231631315774}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDR (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 4327835279854858}
   - component: {fileID: 33990418124060414}
   - component: {fileID: 23954002229719554}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Car2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 4831756191009306}
   - component: {fileID: 33159990724530856}
   - component: {fileID: 23892780693936874}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WC2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4936075944912548}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4215568456586178}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 4084841683695234}
   - component: {fileID: 33765239088572736}
   - component: {fileID: 23494067518561258}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WC2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +559,8 @@ GameObject:
   - component: {fileID: 1358354604057604617}
   - component: {fileID: -7820577172010430747}
   - component: {fileID: 9020805472298922343}
-  m_Layer: 7
+  - component: {fileID: 6145790544054203256}
+  m_Layer: 3
   m_Name: Car2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +577,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4327835279854858}
@@ -592,7 +593,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3.3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60
@@ -642,3 +643,21 @@ MonoBehaviour:
   signalDirection: 0
   speed: 5
   waypointReachDistance: 0.5
+  followDistance: 8
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &6145790544054203256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987477988914766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: Car
+  aoiGroup: Vehicle

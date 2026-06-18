@@ -25,6 +25,9 @@ public class CarSpawner : MonoBehaviour
     public float minSpawnInterval = 2f;
     public float maxSpawnInterval = 6f;
 
+    [Tooltip("Max cars active at the same time on a single direction group.")]
+    public int maxCarsPerGroup = 1;
+
     private Dictionary<GameObject, Queue<GameObject>> _pool;
     private int[] _activePerGroup;
     private GameObject _poolRoot;
@@ -76,7 +79,7 @@ public class CarSpawner : MonoBehaviour
         int groupIndex = PickGroup();
         if (groupIndex < 0) return;
 
-        if (_activePerGroup[groupIndex] > 0) return;
+        if (_activePerGroup[groupIndex] >= maxCarsPerGroup) return;
 
         var group = groups[groupIndex];
 

@@ -29,6 +29,10 @@ public class EyeTrackingLogger : MonoBehaviour
     public float maxRayDistance = 100f;
     public bool recordOnlyDuringTrial = true;
 
+    [Header("Speed Tracking")]
+    [Tooltip("Assign XRPlayerMover to log walking speed in each gaze sample row.")]
+    public XRPlayerMover playerMover;
+
     [Header("Metadata")]
     public string participantId = "P001";
     public string sessionId = "S001";
@@ -39,7 +43,6 @@ public class EyeTrackingLogger : MonoBehaviour
     private string currentSignalState = "UNKNOWN";
 
     private bool trialActive = false;
-    private bool crossingInitiationLogged = false;
 
     private double trialStartTime = -1.0;
     private double nextSampleTime = 0.0;
@@ -59,29 +62,14 @@ public class EyeTrackingLogger : MonoBehaviour
         get { return trialActive; }
     }
 
-    public bool CrossingInitiationLogged
-    {
-        get { return crossingInitiationLogged; }
-    }
+    private bool _filesOpened = false;
 
     private void Awake()
     {
         if (xrCamera == null && Camera.main != null)
-        {
             xrCamera = Camera.main;
-        }
 
         sampleInterval = 1.0 / Mathf.Max(1, sampleRateHz);
-
-        string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
-        folderPath = Path.Combine(Application.persistentDataPath, "EyeTrackingLogs", participantId + "_" + timestamp);
-
-        Directory.CreateDirectory(folderPath);
-
-        gazeFilePath = Path.Combine(folderPath, "gaze_samples.csv");
-        eventFilePath = Path.Combine(folderPath, "events.csv");
-
-        OpenFiles();
     }
 
     private void OnEnable()
@@ -114,10 +102,13 @@ public class EyeTrackingLogger : MonoBehaviour
 
         double now = Time.unscaledTimeAsDouble;
 
-        while (now >= nextSampleTime)
+        // At most one sample per frame, resyncing to "now" instead of backfilling missed
+        // samples — a catch-up loop here previously wrote dozens of duplicate-timestamp
+        // rows after any frame hitch (e.g. the hitch at trial start).
+        if (now >= nextSampleTime)
         {
             SampleGaze(now);
-            nextSampleTime += sampleInterval;
+            nextSampleTime = now + sampleInterval;
         }
 
         if (now >= nextFlushTime)
@@ -134,7 +125,7 @@ public class EyeTrackingLogger : MonoBehaviour
 
         gazeWriter.WriteLine(
             "timestamp_s,trial_time_s,participant_id,session_id,condition_name,distraction_type,trial_number," +
-            "trial_active,gaze_valid,signal_state," +
+            "trial_active,gaze_valid,signal_state,walking_speed,current_zone,current_zone_road," +
             "gaze_origin_x,gaze_origin_y,gaze_origin_z," +
             "gaze_dir_x,gaze_dir_y,gaze_dir_z," +
             "hit_aoi_id,hit_aoi_group,hit_point_x,hit_point_y,hit_point_z,hit_distance," +
@@ -234,6 +225,11 @@ public class EyeTrackingLogger : MonoBehaviour
             headRot = xrCamera.transform.rotation;
         }
 
+        float walkSpeed = playerMover != null ? playerMover.CurrentSpeed : -1f;
+
+        string currentZone = ZoneTracker.Instance != null ? ZoneTracker.Instance.CurrentZone.ToString() : "NONE";
+        string currentZoneRoad = ZoneTracker.Instance != null ? ZoneTracker.Instance.CurrentRoad.ToString() : "NA";
+
         double trialTime = trialStartTime >= 0.0 ? now - trialStartTime : -1.0;
 
         string row =
@@ -247,6 +243,8 @@ public class EyeTrackingLogger : MonoBehaviour
             (trialActive ? "1" : "0") + "," +
             (gazeValid ? "1" : "0") + "," +
             Escape(currentSignalState) + "," +
+            F(walkSpeed) + "," +
+            Escape(currentZone) + "," + Escape(currentZoneRoad) + "," +
             F(gazeOrigin.x) + "," + F(gazeOrigin.y) + "," + F(gazeOrigin.z) + "," +
             F(gazeDir.x) + "," + F(gazeDir.y) + "," + F(gazeDir.z) + "," +
             Escape(hitAoiId) + "," + Escape(hitAoiGroup) + "," +
@@ -306,8 +304,18 @@ public class EyeTrackingLogger : MonoBehaviour
 
     public void StartTrial()
     {
+        if (!_filesOpened)
+        {
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
+            folderPath = Path.Combine(Application.persistentDataPath, "EyeTrackingLogs", participantId + "_" + timestamp);
+            Directory.CreateDirectory(folderPath);
+            gazeFilePath  = Path.Combine(folderPath, "gaze_samples.csv");
+            eventFilePath = Path.Combine(folderPath, "events.csv");
+            OpenFiles();
+            _filesOpened = true;
+        }
+
         trialActive = true;
-        crossingInitiationLogged = false;
         trialStartTime = Time.unscaledTimeAsDouble;
         nextSampleTime = trialStartTime;
         WriteEvent("TrialStart", "");
@@ -323,17 +331,6 @@ public class EyeTrackingLogger : MonoBehaviour
     {
         currentSignalState = state;
         WriteEvent("SignalState", state);
-    }
-
-    public void MarkCrossingInitiation(string crossingLineId)
-    {
-        if (!trialActive || crossingInitiationLogged)
-        {
-            return;
-        }
-
-        crossingInitiationLogged = true;
-        WriteEvent("CrossingInitiation", crossingLineId);
     }
 
     public void WriteCustomEvent(string eventName, string eventValue)

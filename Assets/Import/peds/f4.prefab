@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3552157711719789218}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1526006382854252123}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RUpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1381668603929269211}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000COM2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2203237490384427034}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2906312143668005067}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LUpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4542723643835645491}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4098105244065214327}
   - component: {fileID: 366200990488715772}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Skin_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5861882776182775508}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LThigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5068971351195001311}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000COM1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6406509337164615927}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LCalf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5682900254368148570}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +439,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1355161657666708285}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3563321762656946890}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3668707280859807013}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Spine4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7870479522271324163}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RThigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1066101282209659384}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LClavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +601,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645450040933791027}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Spine3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4156043963302326194}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RToe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1832288026886065832}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RCalf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1845273660106947851}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4525672114099405800}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RClavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -760,7 +760,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8140660436162571341}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -792,7 +792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3627969857475671197}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Spine0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 7014502658288381124}
   - component: {fileID: 535958040359754752}
   - component: {fileID: 7054006965826497563}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: f4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,10 +930,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypoints: []
-  waitWaypointIndex: 1
-  crossingVehicleDirection: 0
   speed: 1.2
+  speedVariance: 0.2
   waypointReachDistance: 0.5
+  waypointRandomRadius: 0.8
 --- !u!1 &6504645318732738991
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,7 +943,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8658702615789547502}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8482064464066795018}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000LToe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1006,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5216634287759530482}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1037,7 +1037,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2669171620904794447}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1069,7 +1069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7914783249511771121}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Female000RHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}

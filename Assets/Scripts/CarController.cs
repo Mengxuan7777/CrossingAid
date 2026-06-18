@@ -11,6 +11,12 @@ public class CarController : MonoBehaviour, ISpawnable
     public float speed = 5f;
     public float waypointReachDistance = 0.5f;
 
+    [Header("Car Following")]
+    [Tooltip("Stop when another car is within this distance ahead (m).")]
+    public float followDistance = 4f;
+    [Tooltip("Set to the Car layer so cars detect each other but not the player.")]
+    public LayerMask carLayerMask;
+
     public event Action OnDestinationReached;
     public Transform[] Waypoints { set => waypoints = value; }
 
@@ -46,6 +52,7 @@ public class CarController : MonoBehaviour, ISpawnable
     {
         if (waypoints == null || waypoints.Length == 0) return;
         if (_waitingAtStopLine) return;
+        if (IsBlockedByCarAhead()) return;
         MoveTowardWaypoint();
     }
 
@@ -73,6 +80,15 @@ public class CarController : MonoBehaviour, ISpawnable
         _currentIndex++;
         if (_currentIndex >= waypoints.Length)
             OnDestinationReached?.Invoke();
+    }
+
+    private bool IsBlockedByCarAhead()
+    {
+        if (carLayerMask == 0 || waypoints == null || _currentIndex >= waypoints.Length) return false;
+        Vector3 dir = waypoints[_currentIndex].position - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.01f) return false;
+        return Physics.Raycast(transform.position + Vector3.up * 0.5f, dir.normalized, followDistance, carLayerMask);
     }
 
     private bool CanProceed()

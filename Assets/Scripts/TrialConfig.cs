@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public enum AssistanceLevel   { Unassisted, FullyAssisted }
 public enum DistractionType   { None, Conversation, TextReading }
 public enum PlayerCrossesRoad { NorthSouth, EastWest }
+public enum ZoneType          { Approaching, Initiation, Crossing }
 
 [Serializable]
 public class TrialDefinition

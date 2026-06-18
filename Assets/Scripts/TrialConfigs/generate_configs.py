@@ -41,40 +41,40 @@ import json, copy, os
 PAIRS = {
     "pair_A": {
         "texts": [
-            "Pedestrian fatalities at signalized intersections dropped by 34 percent last year.",
+            "Meeting with Claire from 10:00-11am on Thursday.",
 
-            "56 new countdown timers installed at major crossings to help reduce accidents.",
+            "Pick up a Bestbuy order at 5th Avenue after 5pm.",
 
-            "The city plans to add the countdown timer program to 120 intersections by next spring.",
+            "Book a flight to San Francisco on July 10th.",
         ],
         "questions": [
-            "By what percentage did pedestrian fatalities drop last year?",
-            "How many new countdown timers were installed at major crossings?",
-            "How many intersections will get the countdown timer program by next spring?",
+            "What time does the meeting with Claire start?",
+            "Where do you need to pick up the Bestbuy order?",
+            "What date is the flight to San Francisco?",
         ],
         "correctAnswers": [
-            "34 percent",
-            "56",
-            "120",
+            "10:00am",
+            "5th Avenue",
+            "July 10th",
         ],
     },
     "pair_B": {
         "texts": [
-            "A study found that phone use reduces a pedestrian's situational awareness by 61 percent.",
+            "You missed a call from mom at 10:35pm yesterday.",
 
-            "Researchers observed 2,400 crossings over a six-week period to reach this conclusion.",
+            "Visa appointment rescheduled to 2:30pm on Tuesday.",
 
-            "Hands-free devices resulted in 27 percent reduced awareness compared to undistracted walking.",
+            "Your OpenAI subscription renews on June 21th.",
         ],
         "questions": [
-            "By how much does phone use reduce pedestrian situational awareness?",
-            "How many weeks did the researchers spend to observe 2400 crossings?",
-            "By how much did hands-free devices reduce awareness?",
+            "What time did your mom call yesterday?",
+            "What time is the visa appointment rescheduled to?",
+            "When does your OpenAI subscription renew?",
         ],
         "correctAnswers": [
-            "61 percent",
-            "six weeks",
-            "27 percent",
+            "10:35pm",
+            "2:30pm on Tuesday",
+            "June 21st",
         ],
     },
 }

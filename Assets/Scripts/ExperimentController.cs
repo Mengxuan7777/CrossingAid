@@ -14,6 +14,10 @@ public class ExperimentController : MonoBehaviour
     public string distractionType = "None";
     public int trialNumber = 1;
 
+    [Header("Signal Tracking")]
+    [Tooltip("Default road tracked for signal_state before the player commits to a crossing direction (see SetCrossingRoad). Updated live by ZoneTracker on Initiation zone entry.")]
+    public PlayerCrossesRoad crossingRoad = PlayerCrossesRoad.NorthSouth;
+
     [Header("Options")]
     public bool autoStartOnPlay = false;
     public bool resetPlayerOnStartTrial = true;
@@ -27,11 +31,62 @@ public class ExperimentController : MonoBehaviour
     public KeyCode walkKey = KeyCode.Alpha2;
 
     private bool trialStarted = false;
+    private bool _armed = false;
 
     private void Start()
     {
+        var signals = IntersectionSignalController.Instance;
+        if (signals != null)
+        {
+            signals.OnNorthSouthCrossingChanged += OnNorthSouthSignalChanged;
+            signals.OnEastWestCrossingChanged   += OnEastWestSignalChanged;
+        }
+
         if (autoStartOnPlay)
             StartTrial();
+    }
+
+    private void OnDestroy()
+    {
+        var signals = IntersectionSignalController.Instance;
+        if (signals != null)
+        {
+            signals.OnNorthSouthCrossingChanged -= OnNorthSouthSignalChanged;
+            signals.OnEastWestCrossingChanged   -= OnEastWestSignalChanged;
+        }
+    }
+
+    private void OnNorthSouthSignalChanged(PedestrianLightState state)
+    {
+        if (crossingRoad == PlayerCrossesRoad.NorthSouth)
+            ApplySignalState(state);
+    }
+
+    private void OnEastWestSignalChanged(PedestrianLightState state)
+    {
+        if (crossingRoad == PlayerCrossesRoad.EastWest)
+            ApplySignalState(state);
+    }
+
+    private void ApplySignalState(PedestrianLightState state)
+    {
+        if (state == PedestrianLightState.Walk) SetWalk();
+        else SetDontWalk();
+    }
+
+    // Called by ZoneTracker when the player enters an Initiation zone (i.e. commits
+    // to a crossing direction). Switches which pedestrian signal drives signal_state
+    // and immediately logs its current value.
+    public void SetCrossingRoad(PlayerCrossesRoad road)
+    {
+        if (road == crossingRoad) return;
+        crossingRoad = road;
+
+        var signals = IntersectionSignalController.Instance;
+        if (signals == null) return;
+        var direction = road == PlayerCrossesRoad.NorthSouth ? SignalDirection.NorthSouth : SignalDirection.EastWest;
+        bool safe = signals.GetState(direction) == VehicleLightState.Red;
+        ApplySignalState(safe ? PedestrianLightState.Walk : PedestrianLightState.DontWalk);
     }
 
     private void Update()
@@ -45,8 +100,20 @@ public class ExperimentController : MonoBehaviour
         if (Input.GetKeyDown(walkKey))         SetWalk();
     }
 
+    // Called by TrialSequencer right before StartTrial() once it has actually loaded a
+    // config and is starting a real trial. Blocks StartTrial() from firing via debug
+    // keys or autoStartOnPlay before that point, which previously logged a stray warmup
+    // trial with default Inspector metadata (e.g. conditionName="TestCondition").
+    public void Arm() => _armed = true;
+
     public void StartTrial()
     {
+        if (!_armed)
+        {
+            Debug.LogWarning("[ExperimentController] StartTrial() blocked — not armed yet. TrialSequencer arms this automatically once a config is loaded; this prevents warmup/debug trials from being logged.");
+            return;
+        }
+
         if (logger == null)
         {
             Debug.LogError("[ExperimentController] StartTrial() aborted — logger is null. Assign EyeTrackingLogger in the Inspector.");

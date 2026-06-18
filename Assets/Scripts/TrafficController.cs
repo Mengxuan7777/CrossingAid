@@ -27,6 +27,10 @@ public class IntersectionSignalController : MonoBehaviour
     public float greenDuration = 10f;
     public float yellowDuration = 3f;
     public float allRedDuration = 2f;
+    [Tooltip("Seconds before a pedestrian phase ends that the signal starts flashing.")]
+    public float flashDuration = 3f;
+    [Tooltip("Seconds between each flash toggle.")]
+    public float flashInterval = 0.4f;
 
     public event Action<VehicleLightState> OnNorthSouthChanged;
     public event Action<VehicleLightState> OnEastWestChanged;
@@ -126,35 +130,78 @@ public class IntersectionSignalController : MonoBehaviour
     {
         if (ewGoesFirst)
         {
-            // EW is already Green; complete the EW half before entering the main loop.
-            yield return new WaitForSeconds(greenDuration);
+            yield return StartCoroutine(GreenPhase(eastWestCrossingPedLights, PedestrianLightState.DontWalk));
             SetEastWest(VehicleLightState.Yellow);
-            yield return new WaitForSeconds(yellowDuration);
-            SetEastWest(VehicleLightState.Red);
-            yield return new WaitForSeconds(allRedDuration);
+            yield return StartCoroutine(YellowAndAllRedPhase(
+                northSouthCrossingPedLights, PedestrianLightState.Walk,
+                () => SetEastWest(VehicleLightState.Red)));
         }
 
         while (true)
         {
             SetNorthSouth(VehicleLightState.Green);
             SetEastWest(VehicleLightState.Red);
-            yield return new WaitForSeconds(greenDuration);
+            // Flash NS DontWalk for the last flashDuration seconds of the green phase.
+            yield return StartCoroutine(GreenPhase(northSouthCrossingPedLights, PedestrianLightState.DontWalk));
 
             SetNorthSouth(VehicleLightState.Yellow);
-            yield return new WaitForSeconds(yellowDuration);
-
-            SetNorthSouth(VehicleLightState.Red);
-            yield return new WaitForSeconds(allRedDuration);
+            // Flash EW Walk starting flashDuration seconds before EW turns Green.
+            yield return StartCoroutine(YellowAndAllRedPhase(
+                eastWestCrossingPedLights, PedestrianLightState.Walk,
+                () => SetNorthSouth(VehicleLightState.Red)));
 
             SetEastWest(VehicleLightState.Green);
-            yield return new WaitForSeconds(greenDuration);
+            // Flash EW DontWalk for the last flashDuration seconds of the green phase.
+            yield return StartCoroutine(GreenPhase(eastWestCrossingPedLights, PedestrianLightState.DontWalk));
 
             SetEastWest(VehicleLightState.Yellow);
-            yield return new WaitForSeconds(yellowDuration);
+            // Flash NS Walk starting flashDuration seconds before NS turns Green.
+            yield return StartCoroutine(YellowAndAllRedPhase(
+                northSouthCrossingPedLights, PedestrianLightState.Walk,
+                () => SetEastWest(VehicleLightState.Red)));
+        }
+    }
 
-            SetEastWest(VehicleLightState.Red);
+    // Waits greenDuration, flashing pedGroup for the last flashDuration seconds.
+    private IEnumerator GreenPhase(PedestrianLightView[] pedGroup, PedestrianLightState state)
+    {
+        yield return new WaitForSeconds(Mathf.Max(0f, greenDuration - flashDuration));
+        FlashPedGroup(pedGroup, state);
+        yield return new WaitForSeconds(Mathf.Min(greenDuration, flashDuration));
+    }
+
+    // Covers the Yellow + AllRed period, calling setRed() at the yellow→red boundary.
+    // Starts flashing pedGroup so the flash ends exactly when SetGreen is called next.
+    private IEnumerator YellowAndAllRedPhase(PedestrianLightView[] pedGroup, PedestrianLightState state, System.Action setRed)
+    {
+        float timeToEnd = yellowDuration + allRedDuration;
+        float flashStart = Mathf.Max(0f, timeToEnd - flashDuration);
+
+        if (flashStart < yellowDuration)
+        {
+            // Flash starts during Yellow.
+            yield return new WaitForSeconds(flashStart);
+            FlashPedGroup(pedGroup, state);
+            yield return new WaitForSeconds(yellowDuration - flashStart);
+            setRed();
             yield return new WaitForSeconds(allRedDuration);
         }
+        else
+        {
+            // Flash starts during AllRed.
+            yield return new WaitForSeconds(yellowDuration);
+            setRed();
+            yield return new WaitForSeconds(flashStart - yellowDuration);
+            FlashPedGroup(pedGroup, state);
+            yield return new WaitForSeconds(timeToEnd - flashStart);
+        }
+    }
+
+    private void FlashPedGroup(PedestrianLightView[] group, PedestrianLightState state)
+    {
+        if (group == null) return;
+        foreach (var light in group)
+            light?.StartFlashing(state, flashInterval);
     }
 
     private void SetNorthSouth(VehicleLightState state)

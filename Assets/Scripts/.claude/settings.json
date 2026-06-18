@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(python -c ' *)",
-      "Bash(git diff *)"
+      "Bash(git diff *)",
+      "Read(//c/Users/jessl/AppData/LocalLow/JessL/CrossingAid/EyeTrackingLogs/P001_20260616_225754/**)",
+      "Read(//c/Users/jessl/AppData/LocalLow/JessL/CrossingAid/**)",
+      "Bash(awk '$1!=0.000000')",
+      "Bash(awk -F, '$9==0 {print $1}' gaze_samples.csv)",
+      "Bash(sed -n '1p;$p')",
+      "Bash(awk -F, '$9==0' gaze_samples.csv)",
+      "Bash(awk -F, '{print $1, $9}' gaze_samples.csv)",
+      "Bash(awk '{ *)"
     ]
   }
 }

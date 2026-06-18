@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4129607652118280}
   - component: {fileID: 33419825561914612}
   - component: {fileID: 23028322831874450}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Taxi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 4378828394111032}
   - component: {fileID: 33635889545773298}
   - component: {fileID: 23818980727292126}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4343955279752482}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDF (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,8 @@ GameObject:
   - component: {fileID: 1863841664520342080}
   - component: {fileID: -7875234818407893105}
   - component: {fileID: 7552989696729219899}
-  m_Layer: 7
+  - component: {fileID: 583577618531339618}
+  m_Layer: 3
   m_Name: Taxi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +232,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4129607652118280}
@@ -247,7 +248,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 4.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60
@@ -297,6 +298,24 @@ MonoBehaviour:
   signalDirection: 0
   speed: 5
   waypointReachDistance: 0.5
+  followDistance: 8
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &583577618531339618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477075205395052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: Car
+  aoiGroup: Vehicle
 --- !u!1 &1486452445092534
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259590585241198}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDR (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +357,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4290489485435820}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +391,7 @@ GameObject:
   - component: {fileID: 4007126813326160}
   - component: {fileID: 33980499455804152}
   - component: {fileID: 23416476421498812}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +474,7 @@ GameObject:
   - component: {fileID: 4396507451155422}
   - component: {fileID: 33377732896653984}
   - component: {fileID: 23466650960819888}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +557,7 @@ GameObject:
   - component: {fileID: 4749009286415914}
   - component: {fileID: 33891315104380440}
   - component: {fileID: 23047720604817916}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +638,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4127815319557946}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WDF
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4816407979991118}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4110272054413968}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WFP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 4639339315077400}
   - component: {fileID: 33744149546331166}
   - component: {fileID: 23408084604867298}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4988416633104456}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4472601829969488}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: WRD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,8 @@ GameObject:
   - component: {fileID: 8383783542096327800}
   - component: {fileID: 1712650639289096520}
   - component: {fileID: 5335359177982533101}
-  m_Layer: 7
+  - component: {fileID: -4902992740780879592}
+  m_Layer: 3
   m_Name: Traffic B - Van
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +241,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4783879582580928}
@@ -256,7 +257,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 4
+  m_Speed: 3.8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 60
@@ -306,6 +307,24 @@ MonoBehaviour:
   signalDirection: 0
   speed: 5
   waypointReachDistance: 0.5
+  followDistance: 8
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &-4902992740780879592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270833023264384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32159330404604643b4242ea4318c7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aoiId: Car
+  aoiGroup: Vehicle
 --- !u!1 &1418451406179180
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +336,7 @@ GameObject:
   - component: {fileID: 4941423846777460}
   - component: {fileID: 33147673346010474}
   - component: {fileID: 23327895083121188}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +419,7 @@ GameObject:
   - component: {fileID: 4222900284487098}
   - component: {fileID: 33857237650357488}
   - component: {fileID: 23588000215147176}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,7 +502,7 @@ GameObject:
   - component: {fileID: 4572589389046288}
   - component: {fileID: 33526431961588166}
   - component: {fileID: 23477026463744614}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +585,7 @@ GameObject:
   - component: {fileID: 4783879582580928}
   - component: {fileID: 33148964930391422}
   - component: {fileID: 23553791345548084}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Van
   m_TagString: Untagged
   m_Icon: {fileID: 0}

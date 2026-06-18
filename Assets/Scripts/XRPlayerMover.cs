@@ -38,6 +38,8 @@ public class XRPlayerMover : MonoBehaviour
     private CharacterController _cc;
     private float _verticalVelocity;
 
+    public float CurrentSpeed { get; private set; }
+
     public void ResetVelocity() { _verticalVelocity = -0.5f; }
 
     private void Awake()
@@ -75,6 +77,7 @@ public class XRPlayerMover : MonoBehaviour
         {
             float t = Mathf.InverseLerp(deadzone, 1f, pressure);
             float speed = Mathf.Lerp(minSpeed, maxSpeed, Mathf.Pow(t, speedCurveExponent));
+            CurrentSpeed = speed;
 
             Vector3 forward = cameraTransform.forward;
             forward.y = 0f;
@@ -87,6 +90,11 @@ public class XRPlayerMover : MonoBehaviour
 
             Vector3 direction = (forward * input.y + right * input.x).normalized;
             move = direction * speed;
+        }
+
+        else
+        {
+            CurrentSpeed = 0f;
         }
 
         move.y = _verticalVelocity;

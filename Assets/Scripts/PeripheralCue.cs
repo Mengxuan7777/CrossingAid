@@ -55,14 +55,16 @@ public class PeripheralCue : MonoBehaviour
 
     private float _lookAwayTimer;
     private bool _cueVisible;
+    private float _cueOnTime;
     private Vector3 _originalScale;
 
-    private void Start()
+    private void Awake()
     {
         cueRenderer ??= GetComponent<Renderer>();
         _originalScale = transform.localScale;
         BuildGradientTexture();
-        SetVisible(false);
+        _cueVisible = false;
+        if (cueRenderer != null) cueRenderer.enabled = false;
     }
 
     [ContextMenu("Rebuild Gradient")]
@@ -71,7 +73,7 @@ public class PeripheralCue : MonoBehaviour
     private void OnDisable()
     {
         _lookAwayTimer = 0f;
-        if (_cueVisible) SetVisible(false);
+        if (_cueVisible) SetVisible(false, "Disabled");
     }
 
     private void BuildGradientTexture()
@@ -122,7 +124,7 @@ public class PeripheralCue : MonoBehaviour
         if (!IsInAnyZone())
         {
             _lookAwayTimer = 0f;
-            if (_cueVisible) SetVisible(false);
+            if (_cueVisible) SetVisible(false, "ZoneExit");
             return;
         }
 
@@ -133,7 +135,7 @@ public class PeripheralCue : MonoBehaviour
         else
         {
             _lookAwayTimer = 0f;
-            if (_cueVisible) SetVisible(false);
+            if (_cueVisible) SetVisible(false, "LookedBack");
             return;
         }
 
@@ -186,6 +188,15 @@ public class PeripheralCue : MonoBehaviour
                                         : dotRight > 0f;  // left cue:  player looks right
     }
 
+    private float GetGazeDeviationAngle()
+    {
+        if (playerOrigin == null || playerCamera == null) return 0f;
+        Vector3 body = playerOrigin.forward; body.y = 0f;
+        Vector3 gaze = playerCamera.forward; gaze.y = 0f;
+        if (body.sqrMagnitude < 0.001f || gaze.sqrMagnitude < 0.001f) return 0f;
+        return Vector3.Angle(body.normalized, gaze.normalized);
+    }
+
     private void ApplyPulse()
     {
         float t = (Mathf.Sin(Time.time * pulseFrequency * Mathf.PI * 2f) + 1f) * 0.5f;
@@ -193,7 +204,7 @@ public class PeripheralCue : MonoBehaviour
         transform.localScale = _originalScale * scale;
     }
 
-    private void SetVisible(bool visible)
+    private void SetVisible(bool visible, string offReason = "")
     {
         _cueVisible = visible;
         if (cueRenderer != null)
@@ -202,9 +213,17 @@ public class PeripheralCue : MonoBehaviour
         if (!visible)
             transform.localScale = _originalScale;
 
+        string zone = ZoneTracker.Instance != null ? ZoneTracker.Instance.CurrentZone.ToString() : "NONE";
+        string road = ZoneTracker.Instance != null ? ZoneTracker.Instance.CurrentRoad.ToString() : "NA";
+
         if (visible)
-            logger?.WriteCustomEvent("PeripheralCueOn", _lookAwayTimer.ToString("F2"));
+        {
+            _cueOnTime = Time.time;
+            logger?.WriteCustomEvent("PeripheralCueOn", $"angle={GetGazeDeviationAngle():F1},lookaway={_lookAwayTimer:F2},zone={zone},road={road}");
+        }
         else
-            logger?.WriteCustomEvent("PeripheralCueOff", "");
+        {
+            logger?.WriteCustomEvent("PeripheralCueOff", $"reason={offReason},visible={Time.time - _cueOnTime:F2},zone={zone},road={road}");
+        }
     }
 }

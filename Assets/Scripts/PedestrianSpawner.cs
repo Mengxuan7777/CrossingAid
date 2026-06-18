@@ -7,8 +7,6 @@ public class PedestrianDirectionGroup
 {
     public string label = "Direction";
     public Transform[] waypoints;
-    public int waitWaypointIndex = 1;
-    public SignalDirection crossingVehicleDirection;
     [Min(0f)] public float spawnWeight = 1f;
 }
 
@@ -117,8 +115,6 @@ public class PedestrianSpawner : MonoBehaviour
         }
 
         // Set group config before SetActive so OnEnable reads the correct values
-        ctrl.crossingVehicleDirection = group.crossingVehicleDirection;
-        ctrl.waitWaypointIndex = group.waitWaypointIndex;
         ctrl.Waypoints = group.waypoints;
 
         go.transform.SetParent(null);
